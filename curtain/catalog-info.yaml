@@ -2,10 +2,12 @@ apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
   name: curtain
-  description: An example of a Backstage application.
+  description: Repo containing yocto github actions
   # Example for optional annotations
   annotations:
     github.com/project-slug: 'Wipro-Organization-105/first-strike'
+    github.com/project-slug: backstage/backstage
+    github.com/project-slug: 'Wipro-Organization-105/first-strike/actions'
     backstage.io/techdocs-ref: dir:.
 spec:
   type: service
