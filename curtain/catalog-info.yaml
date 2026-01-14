@@ -41,4 +41,5 @@ metadata:
     backstage.io/techdocs-ref: value
 spec:
   type: service
+  lifecycle: experimental
   owner: guests
