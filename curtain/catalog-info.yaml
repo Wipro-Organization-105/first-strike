@@ -7,7 +7,7 @@ metadata:
     # This links your CI/CD tab to GitHub Actions
     github.com: Wipro-Organization-105/first-strike
     # This links the Codespaces plugin to your repo
-    github.com: github.com
+    # github.com: github.com
 spec:
   type: service
   lifecycle: experimental
