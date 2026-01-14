@@ -4,6 +4,19 @@ metadata:
   name: curtain
   description: "Main Demo Service"
   annotations:
+    github.com: github.com
+spec:
+  type: service
+  lifecycle: experimental
+  owner: guests # Matches the Group name below
+
+---
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: curtain
+  description: "Main Demo Service"
+  annotations:
     # This links your CI/CD tab to GitHub Actions
     github.com: Wipro-Organization-105/first-strike
     # This links the Codespaces plugin to your repo
