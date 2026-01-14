@@ -2,12 +2,32 @@ apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
   name: curtain
-  description: Repo containing yocto github actions
-  # Example for optional annotations
+  description: "Main Demo Service"
   annotations:
-    github.com/project-slug: 'Wipro-Organization-105/first-strike'
-    backstage.io/techdocs-ref: dir:.
+    # This links your CI/CD tab to GitHub Actions
+    github.com: Wipro-Organization-105/first-strike
+    # This links the Codespaces plugin to your repo
+    github.com: github.com
 spec:
   type: service
-  owner: guest
   lifecycle: experimental
+  owner: guests # Matches the Group name below
+
+---
+apiVersion: backstage.io/v1alpha1
+kind: User
+metadata:
+  name: sshashwat # MUST match your GitHub username exactly
+spec:
+  profile:
+    displayName: Shashwat
+  memberOf: [guests]
+
+---
+apiVersion: backstage.io/v1alpha1
+kind: Group
+metadata:
+  name: guests
+spec:
+  type: team
+  children: []
