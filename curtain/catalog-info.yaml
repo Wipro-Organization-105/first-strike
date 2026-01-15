@@ -1,7 +1,7 @@
 apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
-  name: curtain
+  name: overall
   description: "Main Demo Service"
   annotations:
     #github.com: github.com
@@ -36,7 +36,7 @@ spec:
 apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
-  name: curtain
+  name: links
   links:
     - url: https://github.com/codespaces/urban-space-waffle-jwq7gv7vq4fpqxj?editor=web
       title: Codespaces(Web)
