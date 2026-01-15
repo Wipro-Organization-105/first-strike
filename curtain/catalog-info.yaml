@@ -82,3 +82,7 @@ metadata:
     - url: https://github.com/codespaces/urban-space-waffle-jwq7gv7vq4fpqxj?editor=web
       title: Codespaces(Web)
       icon: dashboard
+spec:
+  type: service
+  lifecycle: experimental
+  owner: guests # Matches the Group name below
