@@ -4,7 +4,8 @@ metadata:
   name: curtain
   description: "Main Demo Service"
   annotations:
-    github.com: github.com
+    #github.com: github.com
+    github.com: Wipro-Organization-105/first-strike
 spec:
   type: service
   lifecycle: experimental
