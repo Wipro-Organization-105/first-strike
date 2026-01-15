@@ -1,7 +1,7 @@
 apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
-  name: overall
+  name: Dashboard
   description: "Main Demo Service"
   links:
     - url: https://github.com/codespaces/urban-space-waffle-jwq7gv7vq4fpqxj?editor=web
