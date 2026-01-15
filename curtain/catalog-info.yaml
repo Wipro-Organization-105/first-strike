@@ -3,9 +3,13 @@ kind: Component
 metadata:
   name: overall
   description: "Main Demo Service"
+  links:
+    - url: https://github.com/codespaces/urban-space-waffle-jwq7gv7vq4fpqxj?editor=web
+      title: Codespaces(Web)
+      icon: dashboard
   annotations:
-    #github.com: github.com
-    github.com: Wipro-Organization-105/first-strike
+    github.com: github.com
+    #github.com: Wipro-Organization-105/first-strike
     github.com/project-slug: 'Wipro-Organization-105/first-strike'
     backstage.io/techdocs-ref: dir:.
 spec:
@@ -31,17 +35,3 @@ metadata:
 spec:
   type: team
   children: []
-
----
-apiVersion: backstage.io/v1alpha1
-kind: Component
-metadata:
-  name: links
-  links:
-    - url: https://github.com/codespaces/urban-space-waffle-jwq7gv7vq4fpqxj?editor=web
-      title: Codespaces(Web)
-      icon: dashboard
-spec:
-  type: service
-  lifecycle: experimental
-  owner: guests # Matches the Group name below
