@@ -6,22 +6,8 @@ metadata:
   annotations:
     #github.com: github.com
     github.com: Wipro-Organization-105/first-strike
-spec:
-  type: service
-  lifecycle: experimental
-  owner: guests # Matches the Group name below
-
----
-apiVersion: backstage.io/v1alpha1
-kind: Component
-metadata:
-  name: curtain
-  description: "Main Demo Service"
-  annotations:
-    # This links your CI/CD tab to GitHub Actions
-    github.com: Wipro-Organization-105/first-strike
-    # This links the Codespaces plugin to your repo
-    # github.com: github.com
+    github.com/project-slug: 'Wipro-Organization-105/first-strike'
+    backstage.io/techdocs-ref: dir:.
 spec:
   type: service
   lifecycle: experimental
@@ -45,33 +31,6 @@ metadata:
 spec:
   type: team
   children: []
-
----
-apiVersion: backstage.io/v1alpha1
-kind: Component
-metadata:
-  name: curtain
-  annotations:
-    backstage.io/techdocs-ref: value
-spec:
-  type: service
-  lifecycle: experimental
-  owner: guests
-
----
-apiVersion: backstage.io/v1alpha1
-kind: Component
-metadata:
-  name: curtain
-  description: "Main Demo Service"
-  # Example for optional annotations
-  annotations:
-    github.com/project-slug: 'Wipro-Organization-105/first-strike'
-    backstage.io/techdocs-ref: dir:.
-spec:
-  type: service
-  owner: guests
-  lifecycle: experimental
 
 ---
 apiVersion: backstage.io/v1alpha1
