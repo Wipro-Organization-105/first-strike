@@ -1,5 +1,4 @@
 import { Button, Grid } from '@material-ui/core';
-import { EntityGithubActionsContent, isGithubActionsAvailable } from '@backstage-community/plugin-github-actions';
 import {
   EntityApiDefinitionCard,
   EntityConsumedApisCard,
@@ -58,7 +57,6 @@ import {
   EntityKubernetesContent,
   isKubernetesAvailable,
 } from '@backstage/plugin-kubernetes';
-import { EntityGithubCodespacesCard } from '@adityasinghal26/plugin-github-codespaces';
 
 const techdocsContent = (
   <EntityTechdocsContent>
@@ -81,16 +79,16 @@ const cicdContent = (
      */}
     <EntitySwitch.Case>
       <EmptyState
-        title="All Codespaces"
+        title="No CI/CD available for this entity"
         missing="info"
-        description="All repositories with codespaces Enabled / Accessible"
+        description="You need to add an annotation to your component if you want to enable CI/CD for it. You can read more about annotations in Backstage by clicking the button below."
         action={
           <Button
             variant="contained"
             color="primary"
-            href="https://github.com/codespaces/urban-space-waffle-jwq7gv7vq4fpqxj?editor=web"
+            href="https://backstage.io/docs/features/software-catalog/well-known-annotations"
           >
-            curtain (Open In Browser)
+            Read more
           </Button>
         }
       />
@@ -125,15 +123,12 @@ const entityWarningContent = (
     </EntitySwitch>
   </>
 );
-
+import { EntityGithubCodespacesCard } from '@adityasinghal26/plugin-github-codespaces';
 const overviewContent = (
   <Grid container spacing={3} alignItems="stretch">
     {entityWarningContent}
     <Grid item md={6}>
       <EntityAboutCard variant="gridItem" />
-    </Grid>
-    <Grid item md={6} xs={12}>
-      <EntityGithubCodespacesCard projectSlug="Wipro-Organization-105/first-strike"/>
     </Grid>
     <Grid item md={6} xs={12}>
       <EntityCatalogGraphCard variant="gridItem" height={400} />
@@ -145,6 +140,9 @@ const overviewContent = (
     <Grid item md={8} xs={12}>
       <EntityHasSubcomponentsCard variant="gridItem" />
     </Grid>
+    <Grid item md={6} xs={12}>
+      <EntityGithubCodespacesCard />
+    </Grid>
   </Grid>
 );
 
@@ -153,15 +151,7 @@ const serviceEntityPage = (
     <EntityLayout.Route path="/" title="Overview">
       {overviewContent}
     </EntityLayout.Route>
-  <EntityLayout.Route 
-      path="/github-actions" 
-      title="GitHub Actions"
-      // This condition checks for the annotation. If it fails, the tab might hide or show "No CI/CD"
-      if={isGithubActionsAvailable} 
-    >
-      <EntityGithubActionsContent />
-    </EntityLayout.Route>
-    
+
     <EntityLayout.Route path="/ci-cd" title="CI/CD">
       {cicdContent}
     </EntityLayout.Route>

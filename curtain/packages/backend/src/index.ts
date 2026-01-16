@@ -7,65 +7,8 @@
  */
 
 import { createBackend } from '@backstage/backend-defaults';
-import { coreServices } from '@backstage/backend-plugin-api';
-import { createBackendModule } from '@backstage/backend-plugin-api';
-import { authProvidersExtensionPoint } from '@backstage/plugin-auth-node';
-import { githubAuthenticator } from '@backstage/plugin-auth-backend-module-github-provider';
-const backend = createBackend();
-// auth plugin
-backend.add(import('@backstage/plugin-auth-backend'));
 
-/*
-const githubSignInModule = createBackendModule({
-  moduleId: 'github-signin-resolver',
-  pluginId: 'auth',
-  register(reg) {
-    reg.registerInit({
-      deps: { providers: authProvidersExtensionPoint },
-      async init({ providers }) {
-        providers.registerProvider({
-          providerId: 'github',
-          authenticator: githubAuthenticator,
-          async resolve({ result: { fullProfile } }, ctx) {
-            return ctx.signInWithCatalogUser({
-              entityRef: { name: fullProfile.username! },
-            });
-          },
-        });
-      },
-    });
-  },
-});*/
-/*const githubSignInModule = createBackendModule({
-  moduleId: 'github-signin-resolver',
-  pluginId: 'auth',
-  register(reg) {
-    reg.registerInit({
-      deps: { providers: authProvidersExtensionPoint },
-      async init({ providers }) {
-        providers.registerProvider({
-          providerId: 'github',
-          authenticator: githubAuthenticator,
-          async resolve({ result: { fullProfile } }, ctx) {
-	  try {
-	    return await ctx.signInWithCatalogUser({
-	      entityRef: { name: fullProfile.username! },
-	    });
-	  } catch (e) {
-	    // FALLBACK: If user isn't in catalog, issue a token anyway for the demo
-	    return ctx.issueToken({
-	      claims: {
-		sub: `user:default/${fullProfile.username}`,
-		ent: [`user:default/${fullProfile.username}`],
-	      },
-	    });
-	  }
-          },
-        });
-      },
-    });
-  },
-});*/
+const backend = createBackend();
 
 backend.add(import('@backstage/plugin-app-backend'));
 backend.add(import('@backstage/plugin-proxy-backend'));
@@ -73,18 +16,12 @@ backend.add(import('@backstage/plugin-proxy-backend'));
 // scaffolder plugin
 backend.add(import('@backstage/plugin-scaffolder-backend'));
 backend.add(import('@backstage/plugin-scaffolder-backend-module-github'));
-
 backend.add(
   import('@backstage/plugin-scaffolder-backend-module-notifications'),
 );
 
 // techdocs plugin
 backend.add(import('@backstage/plugin-techdocs-backend'));
-
-
-// See https://backstage.io/docs/backend-system/building-backends/migrating#the-auth-plugin
-backend.add(import('@backstage/plugin-auth-backend-module-guest-provider'));
-// See https://backstage.io/docs/auth/guest/provider
 
 // catalog plugin
 backend.add(import('@backstage/plugin-catalog-backend'));
@@ -119,22 +56,11 @@ backend.add(import('@backstage/plugin-kubernetes-backend'));
 // notifications and signals plugins
 backend.add(import('@backstage/plugin-notifications-backend'));
 backend.add(import('@backstage/plugin-signals-backend'));
-//backend.add(githubSignInModule);
-backend.add(import('@backstage/plugin-auth-backend-module-github-provider'));
-/*backend.add(
-  authProvidersExtensionPoint.createExtension({
-    resolver: {
-      providerId: 'github',
-      authenticator: githubAuthenticator,
-      async resolve({ result: { fullProfile } }, ctx) {
-        // This "SignInResolver" creates a temporary user identity 
-        // based on your GitHub username if you don't exist in the catalog.
-        return ctx.signInWithCatalogUser({
-          entityRef: { name: fullProfile.username! },
-        });
-      },
-    },
-  })
-);*/
+
+//const backend = createBackend();
+backend.add(import('@backstage/plugin-auth-backend'));
+backend.add(import('@backstage/plugin-auth-backend-module-guest-provider'));
+//backend.start();
+
 
 backend.start();
