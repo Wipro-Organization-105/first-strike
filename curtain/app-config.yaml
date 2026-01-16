@@ -1,10 +1,9 @@
 app:
   title: Scaffolded Backstage App
-  # baseUrl: https://urban-space-waffle-jwq7gv7vq4fpqxj-3000.app.github.dev/
   baseUrl: http://localhost:3000
 
 organization:
-  name: Wipro-Organization-105
+  name: Wipro Demo
 
 backend:
   # Used for enabling authentication, secret is shared by all backend plugins
@@ -13,20 +12,17 @@ backend:
   # auth:
   #   keys:
   #     - secret: ${BACKEND_SECRET}
-  # baseUrl: http://localhost:7007
-  baseUrl: https://urban-space-waffle-jwq7gv7vq4fpqxj-7007.app.github.dev/
+  baseUrl: http://localhost:7007
   listen:
     port: 7007
     # Uncomment the following host directive to bind to specific interfaces
-    host: 127.0.0.1
-    # host: 0.0.0.0
+    # host: 127.0.0.1
   csp:
     connect-src: ["'self'", 'http:', 'https:']
     # Content-Security-Policy directives follow the Helmet format: https://helmetjs.github.io/#reference
     # Default Helmet Content-Security-Policy values can be removed by setting the key to false
   cors:
     origin: http://localhost:3000
-    # origin: https://urban-space-waffle-jwq7gv7vq4fpqxj-3000.app.github.dev/
     methods: [GET, HEAD, PATCH, POST, PUT, DELETE]
     credentials: true
   # This is for local development only, it is not recommended to use this in production
@@ -41,13 +37,23 @@ integrations:
     - host: github.com
       # This is a Personal Access Token or PAT from GitHub. You can find out how to generate this token, and more information
       # about setting up the GitHub integration here: https://backstage.io/docs/integrations/github/locations#configuration
-      token: ${GITHUB_TOKEN}
+      token: ${GHE_TOKEN}
     ### Example for how to add your GitHub Enterprise instance using the API:
     # - host: ghe.example.net
     #   apiBaseUrl: https://ghe.example.net/api/v3
     #   token: ${GHE_TOKEN}
+        ## uncomment if using GitHub Enterprise
+        # enterpriseInstanceUrl: ${AUTH_GITHUB_ENTERPRISE_INSTANCE_URL}
+        ## uncomment to set lifespan of user session
+        # sessionDuration: { hours: 24 } # supports `ms` library format (e.g. '24h', '2 days'), ISO duration, "human duration" as used in code
+
 
 proxy:
+  '/github-api':
+    target: https://api.github.com
+    allowedMethods: ['GET']
+    headers:
+      Authorization: token ${GHE_TOKEN}
   ### Example for how to add a proxy endpoint for the frontend.
   ### A typical reason to do this is to handle HTTPS and CORS for internal services.
   # endpoints:
@@ -68,11 +74,21 @@ techdocs:
 
 auth:
   # see https://backstage.io/docs/auth/ to learn about auth providers
+  environment: development
   providers:
     # See https://backstage.io/docs/auth/guest/provider
-    guest:
-      dangerouslyAllowOutsideDevelopment: true
-
+    guest: {}
+    github:
+      development:
+        clientId: ${AUTH_GITHUB_CLIENT_ID}
+        clientSecret: ${AUTH_GITHUB_CLIENT_SECRET}
+        dangerouslyAllowOutsideDevelopment: true
+        additionalScopes:
+          - codespace
+        signIn:
+          resolvers:
+            - resolver: usernameMatchingUserEntityName
+            
 scaffolder:
   # see https://backstage.io/docs/features/software-templates/configuration for software template options
 
@@ -81,38 +97,46 @@ catalog:
     entityFilename: catalog-info.yaml
     pullRequestBranchName: backstage-integration
   rules:
-    - allow: [Component, System, API, Resource, Location]
+    - allow: [Component, System, API, Resource, Location, User, Group]
   locations:
+    - type: url
+      target: https://github.com/Wipro-Organization-105/first-strike/blob/main/curtain/catalog-info.yaml
     # Local example data, file locations are relative to the backend process, typically `packages/backend`
     - type: file
       target: ../../examples/entities.yaml
 
-    # # Local example template
+    # Local example template
     - type: file
       target: ../../examples/template/template.yaml
       rules:
         - allow: [Template]
 
-    # # Local example organizational data
-    - type: file
-      target: ../../examples/org.yaml
-      rules:
-        - allow: [User, Group]
+    # Local example organizational data
+    #- type: file
+    #  target: ../../examples/org.yaml
+    #  rules:
+    #    - allow: [User, Group]
 
     ## Uncomment these lines to add more example data
-    - type: url
-      target: https://github.com/sshashwat/misalpaw/blob/master/CNAME
+    # - type: url
+    #   target: https://github.com/backstage/backstage/blob/master/packages/catalog-model/examples/all.yaml
 
     ## Uncomment these lines to add an example org
     # - type: url
     #   target: https://github.com/backstage/backstage/blob/master/packages/catalog-model/examples/acme-corp.yaml
     #   rules:
     #     - allow: [User, Group]
-
+config:
+  visibility:
+    backend:
+      baseUrl: visible
+    integrations:
+      github:
+        - host: visible
 kubernetes:
   # see https://backstage.io/docs/features/kubernetes/configuration for kubernetes configuration options
 
 # see https://backstage.io/docs/permissions/getting-started for more on the permission framework
 permission:
   # setting this to `false` will disable permissions
-  enabled: false
+  enabled: true
