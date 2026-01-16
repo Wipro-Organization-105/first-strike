@@ -15,7 +15,7 @@ metadata:
 spec:
   type: service
   lifecycle: experimental
-  owner: sshashwat # Matches the Group name below
+  owner: guests # Matches the Group name below
 
 ---
 apiVersion: backstage.io/v1alpha1
