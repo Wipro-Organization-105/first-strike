@@ -58,7 +58,10 @@ import {
   EntityKubernetesContent,
   isKubernetesAvailable,
 } from '@backstage/plugin-kubernetes';
-import { EntityGithubCodespacesCard } from '@adityasinghal26/plugin-github-codespaces';
+import { EntityGithubCodespacesCard,
+         EntityGithubCodespacesContent,
+         EntityGithubCodespacesWidget,
+         EntityGithubCodespacesRepoContent } from '@adityasinghal26/plugin-github-codespaces';
 
 const techdocsContent = (
   <EntityTechdocsContent>
@@ -80,20 +83,28 @@ const cicdContent = (
       </EntitySwitch.Case>
      */}
     <EntitySwitch.Case>
+    <Grid item md={12} xs={12}>
+      <EntityGithubCodespacesRepoContent />
+    </Grid>
+    <Grid item md={12} xs={12}>
+      <EntityGithubCodespacesWidget />
+    </Grid>
       <EmptyState
         title="All Codespaces"
         missing="info"
-        description="All repositories with codespaces Enabled / Accessible"
+==== BASE ====
+        description="You need to add an annotation to your component if you want to enable CI/CD for it. You can read more about annotations in Backstage by clicking the button below."
         action={
           <Button
             variant="contained"
             color="primary"
-            href="https://github.com/codespaces/urban-space-waffle-jwq7gv7vq4fpqxj?editor=web"
+            href="https://backstage.io/docs/features/software-catalog/well-known-annotations"
           >
-            curtain (Open In Browser)
+            Read more
           </Button>
         }
       />
+==== BASE ====
     </EntitySwitch.Case>
   </EntitySwitch>
 );
@@ -132,15 +143,14 @@ const overviewContent = (
     <Grid item md={6}>
       <EntityAboutCard variant="gridItem" />
     </Grid>
+    <Grid item md={4} xs={12}>
+      <EntityLinksCard />
+    </Grid>
     <Grid item md={6} xs={12}>
-      <EntityGithubCodespacesCard projectSlug="Wipro-Organization-105/first-strike"/>
+      <EntityGithubCodespacesWidget />
     </Grid>
     <Grid item md={6} xs={12}>
       <EntityCatalogGraphCard variant="gridItem" height={400} />
-    </Grid>
-
-    <Grid item md={4} xs={12}>
-      <EntityLinksCard />
     </Grid>
     <Grid item md={8} xs={12}>
       <EntityHasSubcomponentsCard variant="gridItem" />
