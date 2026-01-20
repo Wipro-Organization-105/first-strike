@@ -3019,6 +3019,25 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@backstage/plugin-events-backend@npm:^0.5.9":
+  version: 0.5.9
+  resolution: "@backstage/plugin-events-backend@npm:0.5.9"
+  dependencies:
+    "@backstage/backend-openapi-utils": "npm:^0.6.4"
+    "@backstage/backend-plugin-api": "npm:^1.6.0"
+    "@backstage/config": "npm:^1.3.6"
+    "@backstage/errors": "npm:^1.2.7"
+    "@backstage/plugin-events-node": "npm:^0.4.18"
+    "@backstage/types": "npm:^1.2.2"
+    "@types/express": "npm:^4.17.6"
+    content-type: "npm:^1.0.5"
+    express: "npm:^4.22.0"
+    express-promise-router: "npm:^4.1.0"
+    knex: "npm:^3.0.0"
+  checksum: 10c0/61bb053cdb32a3305cdd449debd7042d339f891a567cf6127ad480f31c71067c6249312fb41007abe64ad4cf9467e8245eb81b0488bf2dea5092044cc6ed15be
+  languageName: node
+  linkType: hard
+
 "@backstage/plugin-events-node@npm:^0.4.18":
   version: 0.4.18
   resolution: "@backstage/plugin-events-node@npm:0.4.18"
@@ -15205,6 +15224,7 @@ __metadata:
     "@backstage/plugin-catalog-backend-module-github": "npm:^0.12.0"
     "@backstage/plugin-catalog-backend-module-logs": "npm:^0.1.17"
     "@backstage/plugin-catalog-backend-module-scaffolder-entity-model": "npm:^0.2.15"
+    "@backstage/plugin-events-backend": "npm:^0.5.9"
     "@backstage/plugin-events-backend-module-github": "npm:^0.4.7"
     "@backstage/plugin-kubernetes-backend": "npm:^0.21.0"
     "@backstage/plugin-notifications-backend": "npm:^0.6.1"

@@ -92,19 +92,17 @@ const cicdContent = (
       <EmptyState
         title="All Codespaces"
         missing="info"
-==== BASE ====
-        description="You need to add an annotation to your component if you want to enable CI/CD for it. You can read more about annotations in Backstage by clicking the button below."
-        action={
-          <Button
-            variant="contained"
-            color="primary"
-            href="https://backstage.io/docs/features/software-catalog/well-known-annotations"
-          >
-            Read more
-          </Button>
-        }
-      />
-==== BASE ====
+        description="All repositories with codespaces Enabled / Accessible"
+      //  action={
+      //    <Button
+      //      variant="contained"
+      //      color="primary"
+      //      href="https://github.com/codespaces/urban-space-waffle-jwq7gv7vq4fpqxj?editor=web"
+      //    >
+      //      curtain (Open In Browser)
+      //    </Button>
+      //  }
+       />
     </EntitySwitch.Case>
   </EntitySwitch>
 );
