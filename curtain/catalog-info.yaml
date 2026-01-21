@@ -76,17 +76,6 @@ spec:
 
 ---
 apiVersion: backstage.io/v1alpha1
-kind: User
-metadata:
-  name: sshashwat
-  namespace: default
-spec:
-  profile:
-    displayName: Shashwat
-  memberOf: [guests]
-
----
-apiVersion: backstage.io/v1alpha1
 kind: Group
 metadata:
   name: guests
