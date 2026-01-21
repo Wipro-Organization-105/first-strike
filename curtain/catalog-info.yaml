@@ -1,8 +1,8 @@
 apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
-  name: python-dashboard
-  description: "Main Demo Service"
+  name: Yocto-Pipeline
+  description: "Yocto Build Service"
   links:
     - url: https://github.com/codespaces/fantastic-guacamole-pqpw64w4jj37g5w?editor=web
       title: Codespaces(Web)
