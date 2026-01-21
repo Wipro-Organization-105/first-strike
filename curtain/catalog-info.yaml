@@ -1,6 +1,83 @@
 apiVersion: backstage.io/v1alpha1
 kind: User
 metadata:
+  name: Thamizhanban-wipro
+  namespace: default
+spec:
+  profile:
+    displayName: Thami
+  memberOf: [guests]
+
+---
+apiVersion: backstage.io/v1alpha1
+kind: User
+metadata:
+  name: rupesh-wipro
+  namespace: default
+spec:
+  profile:
+    displayName: Rupesh
+  memberOf: [guests]
+
+---
+apiVersion: backstage.io/v1alpha1
+kind: User
+metadata:
+  name: yuvraj-bhupati
+  namespace: default
+spec:
+  profile:
+    displayName: Yuvraj
+  memberOf: [guests]
+
+---
+apiVersion: backstage.io/v1alpha1
+kind: User
+metadata:
+  name: kksinghwipro04
+  namespace: default
+spec:
+  profile:
+    displayName: Kamlesh
+  memberOf: [guests]
+
+---
+apiVersion: backstage.io/v1alpha1
+kind: User
+metadata:
+  name: akundu6
+  namespace: default
+spec:
+  profile:
+    displayName: Amit
+  memberOf: [guests]
+
+---
+apiVersion: backstage.io/v1alpha1
+kind: User
+metadata:
+  name: sshashwat
+  namespace: default
+spec:
+  profile:
+    displayName: Satyakam
+  memberOf: [guests]
+
+---
+apiVersion: backstage.io/v1alpha1
+kind: User
+metadata:
+  name: wipPratik
+  namespace: default
+spec:
+  profile:
+    displayName: Pratik
+  memberOf: [guests]
+
+---
+apiVersion: backstage.io/v1alpha1
+kind: User
+metadata:
   name: sshashwat
   namespace: default
 spec:
