@@ -6,7 +6,7 @@ metadata:
 spec:
   profile:
     displayName: Thami
-  memberOf: [guests]
+  memberOf: [Wipro-Group-A]
 
 ---
 apiVersion: backstage.io/v1alpha1
@@ -17,7 +17,7 @@ metadata:
 spec:
   profile:
     displayName: Rupesh
-  memberOf: [guests]
+  memberOf: [Wipro-Group-A]
 
 ---
 apiVersion: backstage.io/v1alpha1
@@ -28,7 +28,7 @@ metadata:
 spec:
   profile:
     displayName: Yuvraj
-  memberOf: [guests]
+  memberOf: [Wipro-Group-A]
 
 ---
 apiVersion: backstage.io/v1alpha1
@@ -39,7 +39,7 @@ metadata:
 spec:
   profile:
     displayName: Kamlesh
-  memberOf: [guests]
+  memberOf: [Wipro-Group-A]
 
 ---
 apiVersion: backstage.io/v1alpha1
@@ -50,7 +50,7 @@ metadata:
 spec:
   profile:
     displayName: Amit
-  memberOf: [guests]
+  memberOf: [Wipro-Group-A]
 
 ---
 apiVersion: backstage.io/v1alpha1
@@ -61,7 +61,7 @@ metadata:
 spec:
   profile:
     displayName: Satyakam
-  memberOf: [guests]
+  memberOf: [Wipro-Group-A]
 
 ---
 apiVersion: backstage.io/v1alpha1
@@ -72,13 +72,13 @@ metadata:
 spec:
   profile:
     displayName: Pratik
-  memberOf: [guests]
+  memberOf: [Wipro-Group-A]
 
 ---
 apiVersion: backstage.io/v1alpha1
 kind: Group
 metadata:
-  name: guests
+  name: Wipro-Group-A
 spec:
   type: team
   children: []
@@ -92,6 +92,6 @@ metadata:
     github.com: Wipro-Organization-105/first-strike
 spec:
   type: service
-  owner: guests
+  owner: Wipro-Group-A
   lifecycle: experimental
 
