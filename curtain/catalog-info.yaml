@@ -15,16 +15,94 @@ metadata:
 spec:
   type: service
   lifecycle: experimental
-  owner: Wipro-Group-A # Matches the Group name below
+  owner: Wipro-Group-B # Matches the Group name below
 
 ---
 apiVersion: backstage.io/v1alpha1
 kind: User
 metadata:
-  name: sshashwat # MUST match your GitHub username exactly
+  name: dipankar-maitra-arch
+  namespace: default
 spec:
   profile:
-    displayName: Shashwat
+    displayName: Dipankar
+  memberOf: [Wipro-Group-A, Wipro-Group-B, Wipro-Admins]
+  
+---
+apiVersion: backstage.io/v1alpha1
+kind: User
+metadata:
+  name: Thamizhanban-wipro
+  namespace: default
+spec:
+  profile:
+    displayName: Thami
+  memberOf: [Wipro-Group-A]
+
+---
+apiVersion: backstage.io/v1alpha1
+kind: User
+metadata:
+  name: rupesh-wipro
+  namespace: default
+spec:
+  profile:
+    displayName: Rupesh
+  memberOf: [Wipro-Group-A, Wipro-Group-B, Wipro-Admins]
+
+---
+apiVersion: backstage.io/v1alpha1
+kind: User
+metadata:
+  name: yuvraj-bhupati
+  namespace: default
+spec:
+  profile:
+    displayName: Yuvraj
+  memberOf: [Wipro-Group-B]
+
+---
+apiVersion: backstage.io/v1alpha1
+kind: User
+metadata:
+  name: kksinghwipro04
+  namespace: default
+spec:
+  profile:
+    displayName: Kamlesh
+  memberOf: [Wipro-Group-B]
+
+---
+apiVersion: backstage.io/v1alpha1
+kind: User
+metadata:
+  name: akundu6
+  namespace: default
+spec:
+  profile:
+    displayName: Amit
+  memberOf: [Wipro-Group-A, Wipro-Group-B, Wipro-Admins]
+
+---
+apiVersion: backstage.io/v1alpha1
+kind: User
+metadata:
+  name: sshashwat
+  namespace: default
+spec:
+  profile:
+    displayName: Satyakam
+  memberOf: [Wipro-Group-A, Wipro-Group-B, Wipro-Admins]
+
+---
+apiVersion: backstage.io/v1alpha1
+kind: User
+metadata:
+  name: wipPratik
+  namespace: default
+spec:
+  profile:
+    displayName: Pratik
   memberOf: [Wipro-Group-A]
 
 ---
@@ -32,6 +110,33 @@ apiVersion: backstage.io/v1alpha1
 kind: Group
 metadata:
   name: Wipro-Group-A
+spec:
+  type: team
+  children: []
+  
+---
+apiVersion: backstage.io/v1alpha1
+kind: Group
+metadata:
+  name: Wipro-Group-B
+spec:
+  type: team
+  children: []
+
+---
+apiVersion: backstage.io/v1alpha1
+kind: Group
+metadata:
+  name: Wipro-Admins
+spec:
+  type: team
+  children: []
+
+---
+apiVersion: backstage.io/v1alpha1
+kind: Group
+metadata:
+  name: Wipro-Group-B
 spec:
   type: team
   children: []
