@@ -15,7 +15,7 @@ metadata:
 spec:
   type: service
   lifecycle: experimental
-  owner: guests # Matches the Group name below
+  owner: Wipro-Group-A # Matches the Group name below
 
 ---
 apiVersion: backstage.io/v1alpha1
@@ -25,13 +25,13 @@ metadata:
 spec:
   profile:
     displayName: Shashwat
-  memberOf: [guests]
+  memberOf: [Wipro-Group-A]
 
 ---
 apiVersion: backstage.io/v1alpha1
 kind: Group
 metadata:
-  name: guests
+  name: Wipro-Group-A
 spec:
   type: team
   children: []
