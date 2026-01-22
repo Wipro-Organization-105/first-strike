@@ -11,6 +11,8 @@ import { coreServices } from '@backstage/backend-plugin-api';
 import { createBackendModule } from '@backstage/backend-plugin-api';
 import { authProvidersExtensionPoint } from '@backstage/plugin-auth-node';
 import { githubAuthenticator } from '@backstage/plugin-auth-backend-module-github-provider';
+//import { devcontainersModule } from '@coder/backstage-plugin-devcontainers-backend';
+
 const backend = createBackend();
 // auth plugin
 backend.add(import('@backstage/plugin-auth-backend'));
@@ -69,6 +71,7 @@ const githubSignInModule = createBackendModule({
 
 backend.add(import('@backstage/plugin-app-backend'));
 backend.add(import('@backstage/plugin-proxy-backend'));
+//backend.add(devcontainersModule({ tagName: 'devcontainers' }));
 
 // scaffolder plugin
 backend.add(import('@backstage/plugin-scaffolder-backend'));

@@ -1,5 +1,14 @@
+import React from 'react';
 import { Button, Grid } from '@material-ui/core';
+import {
+  DevcontainersProvider,
+  type DevcontainersConfig,
+  ExampleDevcontainersComponent,
+} from '@coder/backstage-plugin-devcontainers-react';
 import { EntityGithubActionsContent, isGithubActionsAvailable } from '@backstage-community/plugin-github-actions';
+const devcontainersConfig: DevcontainersConfig = {
+  tagName: 'devcontainers',
+};
 import {
   EntityApiDefinitionCard,
   EntityConsumedApisCard,
@@ -149,6 +158,11 @@ const overviewContent = (
     </Grid>
     <Grid item md={6} xs={12}>
       <EntityCatalogGraphCard variant="gridItem" height={400} />
+    </Grid>
+    <Grid item md={6} xs={12}>
+      <DevcontainersProvider config={devcontainersConfig}>
+        <ExampleDevcontainersComponent />
+      </DevcontainersProvider>
     </Grid>
     <Grid item md={8} xs={12}>
       <EntityHasSubcomponentsCard variant="gridItem" />
