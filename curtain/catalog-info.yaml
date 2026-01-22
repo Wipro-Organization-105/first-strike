@@ -117,7 +117,7 @@ kind: Component
 metadata:
   name: curtain
   annotations:
-    github.com: Wipro-Organization-105/first-strike
+    github.com: github.com
 spec:
   type: service
   owner: Wipro-Group-B
