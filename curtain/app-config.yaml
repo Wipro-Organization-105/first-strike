@@ -77,7 +77,7 @@ auth:
   environment: development
   providers:
     # See https://backstage.io/docs/auth/guest/provider
-    guest: {}
+    # guest: {}
     github:
       development:
         clientId: ${AUTH_GITHUB_CLIENT_ID}
