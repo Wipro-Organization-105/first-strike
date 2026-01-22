@@ -71,7 +71,10 @@ import { EntityGithubCodespacesCard,
          EntityGithubCodespacesContent,
          EntityGithubCodespacesWidget,
          EntityGithubCodespacesRepoContent } from '@adityasinghal26/plugin-github-codespaces';
-
+import {
+  GithubWorkflowsContent,
+  isGithubWorkflowsAvailable,
+} from '@veecode-platform/backstage-plugin-github-workflows';
 const techdocsContent = (
   <EntityTechdocsContent>
     <TechDocsAddons>
@@ -97,6 +100,9 @@ const cicdContent = (
     </Grid>
     <Grid item md={12} xs={12}>
       <EntityGithubCodespacesWidget />
+    </Grid>
+    <Grid item md={12} xs={12}>
+      <GithubWorkflowsContent />
     </Grid>
       <EmptyState
         title="All Codespaces"
@@ -275,6 +281,9 @@ const defaultEntityPage = (
 
 const componentPage = (
   <EntitySwitch>
+      <EntitySwitch.Case if={isGithubWorkflowsAvailable}>
+       <GithubWorkflowsContent cards />
+      </EntitySwitch.Case>
     <EntitySwitch.Case if={isComponentType('service')}>
       {serviceEntityPage}
     </EntitySwitch.Case>
