@@ -21,7 +21,7 @@ import { generateProjects } from '@backstage/e2e-test-utils/playwright';
  * See https://playwright.dev/docs/test-configuration.
  */
 export default defineConfig({
-  timeout: 80_000,
+  timeout: 50_000,
 
   expect: {
     timeout: 5_000,
