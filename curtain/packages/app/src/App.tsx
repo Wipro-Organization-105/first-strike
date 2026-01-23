@@ -6,6 +6,8 @@ import {
   CatalogEntityPage,
   CatalogIndexPage,
   catalogPlugin,
+  CatalogTable,
+  CatalogTableColumnsFunc
 } from '@backstage/plugin-catalog';
 import {
   CatalogImportPage,
@@ -39,6 +41,35 @@ import { RequirePermission } from '@backstage/plugin-permission-react';
 import { catalogEntityCreatePermission } from '@backstage/plugin-catalog-common/alpha';
 import { NotificationsPage } from '@backstage/plugin-notifications';
 import { SignalsDisplay } from '@backstage/plugin-signals';
+const customColumnsFunc: CatalogTableColumnsFunc = entityListContext => {
+  // Get the default columns provided by Backstage
+  const defaultColumns = CatalogTable.defaultColumnsFunc(entityListContext);
+
+  // Add your custom Compliance column
+  return [
+    ...defaultColumns,
+    {
+      title: 'Compliance',
+      //field: 'metadata.annotations.compliance-status',
+      width: 'auto',
+      render: (entity: any) => {
+        const status = entity.metadata?.annotations?.['compliance-status'] || 'PENDING';
+        const isApproved = status === 'APPROVED';
+        
+        return (
+          <span style={{ 
+            color: isApproved ? '#2e7d32' : '#c62828',
+            fontWeight: 'bold',
+            textTransform: 'uppercase',
+            fontSize: '0.75rem'
+          }}>
+            {status}
+          </span>
+        );
+      },
+    },
+  ];
+};
 
 const app = createApp({
   apis,
@@ -88,7 +119,7 @@ const app = createApp({
 const routes = (
   <FlatRoutes>
     <Route path="/" element={<Navigate to="catalog" />} />
-    <Route path="/catalog" element={<CatalogIndexPage />} />
+    <Route path="/catalog" element={<CatalogIndexPage columns={customColumnsFunc}/>} />
     <Route
       path="/catalog/:namespace/:kind/:name"
       element={<CatalogEntityPage />}

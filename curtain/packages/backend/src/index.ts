@@ -17,6 +17,7 @@ const backend = createBackend();
 // auth plugin
 backend.add(import('@backstage/plugin-auth-backend'));
 
+
 /*
 const githubSignInModule = createBackendModule({
   moduleId: 'github-signin-resolver',
@@ -83,6 +84,8 @@ backend.add(
 
 // techdocs plugin
 backend.add(import('@backstage/plugin-techdocs-backend'));
+// Add this line with your other backend plugins
+//backend.add(import('@veecode-platform/backstage-plugin-github-workflows-backend'));
 
 
 // See https://backstage.io/docs/backend-system/building-backends/migrating#the-auth-plugin

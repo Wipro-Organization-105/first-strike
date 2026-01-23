@@ -44,7 +44,7 @@ import {
   EntityOwnershipCard,
 } from '@backstage/plugin-org';
 import { EntityTechdocsContent } from '@backstage/plugin-techdocs';
-import { EmptyState } from '@backstage/core-components';
+import { EmptyState, InfoCard, } from '@backstage/core-components';
 import {
   Direction,
   EntityCatalogGraphCard,
@@ -71,10 +71,12 @@ import { EntityGithubCodespacesCard,
          EntityGithubCodespacesContent,
          EntityGithubCodespacesWidget,
          EntityGithubCodespacesRepoContent } from '@adityasinghal26/plugin-github-codespaces';
-import {
-  GithubWorkflowsContent,
-  isGithubWorkflowsAvailable,
-} from '@veecode-platform/backstage-plugin-github-workflows';
+//import {
+//  GithubWorkflowsContent,
+//  isGithubWorkflowsAvailable,
+//} from '@veecode-platform/backstage-plugin-github-workflows';
+import { useEntity } from '@backstage/plugin-catalog-react';
+
 const techdocsContent = (
   <EntityTechdocsContent>
     <TechDocsAddons>
@@ -83,6 +85,30 @@ const techdocsContent = (
   </EntityTechdocsContent>
 );
 
+const ComplianceCard = () => {
+  const { entity } = useEntity();
+  const status = entity.metadata.annotations?.['compliance-status'] || 'UNKNOWN';
+  const license = entity.metadata.annotations?.['license-type'] || 'Not Defined';
+
+  return (
+    <InfoCard title="Legal & Compliance">
+      <div style={{ padding: '10px' }}>
+        <p><strong>License:</strong> {license}</p>
+        <p><strong>Status:</strong>
+          <span style={{
+            marginLeft: '10px',
+            padding: '4px 8px',
+            borderRadius: '4px',
+            backgroundColor: status === 'APPROVED' ? '#4caf50' : '#f44336',
+            color: 'white'
+          }}>
+            {status}
+          </span>
+        </p>
+      </div>
+    </InfoCard>
+  );
+};
 const cicdContent = (
   // This is an example of how you can implement your company's logic in entity page.
   // You can for example enforce that all components of type 'service' should use GitHubActions
@@ -93,6 +119,10 @@ const cicdContent = (
       <EntitySwitch.Case if={isGithubActionsAvailable}>
         <EntityGithubActionsContent />
       </EntitySwitch.Case>
+     <EntitySwitch.Case if={isGithubWorkflowsAvailable}>
+       <GithubWorkflowsContent cards />
+      </EntitySwitch.Case>
+
      */}
     <EntitySwitch.Case>
     <Grid item md={12} xs={12}>
@@ -100,9 +130,6 @@ const cicdContent = (
     </Grid>
     <Grid item md={12} xs={12}>
       <EntityGithubCodespacesWidget />
-    </Grid>
-    <Grid item md={12} xs={12}>
-      <GithubWorkflowsContent />
     </Grid>
       <EmptyState
         title="All Codespaces"
@@ -161,6 +188,9 @@ const overviewContent = (
     </Grid>
     <Grid item md={6} xs={12}>
       <EntityGithubCodespacesWidget />
+    </Grid>
+    <Grid item md={6} xs={12}>
+      <ComplianceCard />
     </Grid>
     <Grid item md={6} xs={12}>
       <EntityCatalogGraphCard variant="gridItem" height={400} />
@@ -281,9 +311,6 @@ const defaultEntityPage = (
 
 const componentPage = (
   <EntitySwitch>
-      <EntitySwitch.Case if={isGithubWorkflowsAvailable}>
-       <GithubWorkflowsContent cards />
-      </EntitySwitch.Case>
     <EntitySwitch.Case if={isComponentType('service')}>
       {serviceEntityPage}
     </EntitySwitch.Case>
