@@ -11,8 +11,7 @@ metadata:
       title: Jfrog Artifactory
       icon: star
   annotations:
-    github.com: github.com
-    ://github.com: Wipro-Organization-105/first-strike
+    github.com: Wipro-Organization-105/first-strike
     #github.com: Wipro-Organization-105/first-strike
     github.com/project-slug: Wipro-Organization-105/first-strike
     backstage.io/techdocs-ref: dir:.
