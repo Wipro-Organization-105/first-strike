@@ -50,11 +50,10 @@ const customColumnsFunc: CatalogTableColumnsFunc = entityListContext => {
     ...defaultColumns,
     {
       title: 'Compliance',
-      //field: 'metadata.annotations.compliance-status',
-      width: 'auto',
       render: (entity: any) => {
-        const status = entity.metadata?.annotations?.['compliance-status'] || 'PENDING';
-        const isApproved = status === 'APPROVED';
+        const status = entity.metadata?.annotations?.['compliance-status'];
+        const displayStatus = status ? status : 'PENDING';
+        const isApproved = displayStatus === 'APPROVED';
         
         return (
           <span style={{ 
@@ -63,7 +62,7 @@ const customColumnsFunc: CatalogTableColumnsFunc = entityListContext => {
             textTransform: 'uppercase',
             fontSize: '0.75rem'
           }}>
-            {status}
+            {displayStatus}
           </span>
         );
       },
