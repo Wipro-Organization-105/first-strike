@@ -51,7 +51,13 @@ const customColumnsFunc: CatalogTableColumnsFunc = entityListContext => {
     {
       title: 'Compliance',
       render: (entity: any) => {
-        const status = entity.metadata?.annotations?.['compliance-status'];
+	const metadata = entity?.metadata || entity?.entity?.metadata;
+	if (!metadata) {
+          console.log('Unexpected Entity Structure:', entity);
+    	  return <span style={{ color: '#999' }}>Loading...</span>;
+	}
+	const annotations = metadata.annotations || {};
+        const status = annotations['compliance-status'];
         const displayStatus = status ? status : 'PENDING';
         const isApproved = displayStatus === 'APPROVED';
         
