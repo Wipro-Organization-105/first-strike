@@ -15,6 +15,7 @@ metadata:
     veecode-platform.com: Wipro-Organization-105/first-strike
     #github.com: Wipro-Organization-105/first-strike
     github.com/project-slug: Wipro-Organization-105/first-strike
+    github.com/workflows: Wipro-Organization-105/first-strike
     backstage.io/techdocs-ref: dir:.
 spec:
   type: service
