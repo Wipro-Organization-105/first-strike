@@ -16,6 +16,8 @@ metadata:
     #github.com: Wipro-Organization-105/first-strike
     github.com/project-slug: Wipro-Organization-105/first-strike
     github.com/workflows: Wipro-Organization-105/first-strike
+    compliance-status: "APPROVED"
+    license-type: "Apache-2.0"
     backstage.io/techdocs-ref: dir:.
 spec:
   type: service
