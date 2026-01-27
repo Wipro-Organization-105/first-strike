@@ -19,6 +19,7 @@ metadata:
     compliance-status: "APPROVED"
     license-type: "Apache-2.0"
     backstage.io/techdocs-ref: dir:.
+    fossa.io/project-name: first-strike
 spec:
   type: service
   lifecycle: experimental
