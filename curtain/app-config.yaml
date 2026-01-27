@@ -56,6 +56,11 @@ proxy:
     allowedMethods: ['GET']
     headers:
       Authorization: token ${GHE_TOKEN}
+  '/fossa':
+    target: https://app.fossa.com/api
+    headers:
+      Authorization: token ${FOSSA_API_TOKEN}
+      Accept: application/json
   #'/github-workflows':
   #  target: https://api.github.com
   #  headers:
@@ -66,6 +71,10 @@ proxy:
   #   '/test':
   #     target: 'https://example.com'
   #     changeOrigin: true
+fossa:
+  token: ${FOSSA_API_TOKEN}
+#  organizationId: Wipro-Organization-105
+#  externalLinkBaseUrl: <your fossa url>
 
 githubWorkflows:
   # This tells the plugin which integration to use

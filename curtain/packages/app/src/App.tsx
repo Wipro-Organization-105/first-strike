@@ -2,6 +2,7 @@ import React from 'react';
 import { githubAuthApiRef } from '@backstage/core-plugin-api';
 import { Navigate, Route } from 'react-router-dom';
 import { apiDocsPlugin, ApiExplorerPage } from '@backstage/plugin-api-docs';
+import { FossaPage } from '@backstage-community/plugin-fossa';
 import {
   CatalogEntityPage,
   CatalogIndexPage,
@@ -131,6 +132,7 @@ const routes = (
     >
       {entityPage}
     </Route>
+    <Route path="/fossa" element={<FossaPage />} />
     <Route path="/docs" element={<TechDocsIndexPage />} />
     <Route
       path="/docs/:namespace/:kind/:name/*"

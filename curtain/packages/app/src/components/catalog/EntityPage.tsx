@@ -76,6 +76,7 @@ import { EntityGithubCodespacesCard,
 //  isGithubWorkflowsAvailable,
 //} from '@veecode-platform/backstage-plugin-github-workflows';
 import { useEntity } from '@backstage/plugin-catalog-react';
+import { EntityFossaCard } from '@backstage-community/plugin-fossa';
 
 const techdocsContent = (
   <EntityTechdocsContent>
@@ -183,13 +184,18 @@ const overviewContent = (
     <Grid item md={6}>
       <EntityAboutCard variant="gridItem" />
     </Grid>
+    <Grid item xs={12} sm={6} md={4}>
+    <InfoCard title="FOSSA Automated scan">
+      <EntityFossaCard />
+    </InfoCard>
+    </Grid>
     <Grid item md={4} xs={12}>
       <EntityLinksCard />
     </Grid>
-    <Grid item md={6} xs={12}>
+    <Grid item md={4} xs={11}>
       <EntityGithubCodespacesWidget />
     </Grid>
-    <Grid item md={6} xs={12}>
+    <Grid item md={4} xs={12}>
       <ComplianceCard />
     </Grid>
     <Grid item md={6} xs={12}>
