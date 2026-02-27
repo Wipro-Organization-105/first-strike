@@ -61,6 +61,13 @@ proxy:
     headers:
       Authorization: token ${FOSSA_API_TOKEN}
       Accept: application/json
+  endpoints:
+    '/wcd-api':
+      target: http://65.1.145.172:1276
+      changeOrigin: true
+      skipAllowedRequests: true
+      credentials: dangerously-allow-unauthenticated
+      allowedHeaders: ['Authorization']
   #'/github-workflows':
   #  target: https://api.github.com
   #  headers:
@@ -108,7 +115,7 @@ auth:
         signIn:
           resolvers:
             - resolver: usernameMatchingUserEntityName
-            
+
 scaffolder:
   # see https://backstage.io/docs/features/software-templates/configuration for software template options
 
@@ -130,7 +137,21 @@ catalog:
     # Local example data, file locations are relative to the backend process, typically `packages/backend`
     - type: file
       target: ../../examples/entities.yaml
-
+    # Workspace template
+    - type: file
+      target: ../../terraform-template/template/template.yaml
+      rules:
+        - allow: [Template]
+    # Dockerfile template
+    - type: file
+      target: ../../dockerfile-template/template/template.yaml
+      rules:
+        - allow: [Template]
+    # Create Workspace Template
+    - type: file
+      target: ../../createWorkspace-template/template/template.yaml
+      rules:
+        - allow: [Template]
     # Local example template
     - type: file
       target: ../../examples/template/template.yaml
@@ -166,3 +187,4 @@ kubernetes:
 permission:
   # setting this to `false` will disable permissions
   enabled: true
+

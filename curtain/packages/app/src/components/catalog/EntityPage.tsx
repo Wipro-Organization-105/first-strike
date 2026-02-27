@@ -77,6 +77,7 @@ import { EntityGithubCodespacesCard,
 //} from '@veecode-platform/backstage-plugin-github-workflows';
 import { useEntity } from '@backstage/plugin-catalog-react';
 import { EntityFossaCard } from '@backstage-community/plugin-fossa';
+import { WCDPage } from '@internal/backstage-plugin-wcd';
 
 const techdocsContent = (
   <EntityTechdocsContent>
@@ -257,6 +258,10 @@ const serviceEntityPage = (
 
     <EntityLayout.Route path="/docs" title="Docs">
       {techdocsContent}
+    </EntityLayout.Route>
+
+    <EntityLayout.Route path="/wcd" title="WCD">
+      <WCDPage />
     </EntityLayout.Route>
   </EntityLayout>
 );

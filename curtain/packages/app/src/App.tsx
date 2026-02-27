@@ -42,6 +42,10 @@ import { RequirePermission } from '@backstage/plugin-permission-react';
 import { catalogEntityCreatePermission } from '@backstage/plugin-catalog-common/alpha';
 import { NotificationsPage } from '@backstage/plugin-notifications';
 import { SignalsDisplay } from '@backstage/plugin-signals';
+import { MyDataPageNew, MyDataComponent } from '@internal/backstage-plugin-my-data';
+import { WCDPage } from '@internal/backstage-plugin-wcd';
+import { WcdPanelPage } from '@internal/backstage-plugin-wcd-panel';
+
 const customColumnsFunc: CatalogTableColumnsFunc = entityListContext => {
   // Get the default columns provided by Backstage
   const defaultColumns = CatalogTable.defaultColumnsFunc(entityListContext);
@@ -158,8 +162,12 @@ const routes = (
     <Route path="/settings" element={<UserSettingsPage />} />
     <Route path="/catalog-graph" element={<CatalogGraphPage />} />
     <Route path="/notifications" element={<NotificationsPage />} />
+    <Route path="/wcd" element={<WCDPage />} />
+    <Route path="/wcd-panel" element={<WcdPanelPage />} />
   </FlatRoutes>
 );
+
+    /* <Route path="/my-data-new" element={<MyDataPageNew />} /> */
 
 export default app.createRoot(
   <>
