@@ -4,7 +4,7 @@ import { Table, Progress, ResponseErrorPanel } from '@backstage/core-components'
 import { TextField, Button, CircularProgress } from '@material-ui/core'; 
 import useAsync from 'react-use/lib/useAsync';
 
-export const TerraformStatus = () => {
+export const Dashboard = () => {
   const configApi = useApi(configApiRef);
   const githubAuth = useApi(githubAuthApiRef);
   const alertApi = useApi(alertApiRef);
@@ -146,5 +146,4 @@ export const TerraformStatus = () => {
   );
 };
 
-export const ExampleComponent = TerraformStatus;
-
+//export const ExampleComponent = Dashboard;
