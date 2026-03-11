@@ -1,0 +1,181 @@
+import React from 'react';
+import { githubAuthApiRef } from '@backstage/core-plugin-api';
+import { Navigate, Route } from 'react-router-dom';
+import { apiDocsPlugin, ApiExplorerPage } from '@backstage/plugin-api-docs';
+import { FossaPage } from '@backstage-community/plugin-fossa';
+import {
+  CatalogEntityPage,
+  CatalogIndexPage,
+  catalogPlugin,
+  CatalogTable,
+  CatalogTableColumnsFunc
+} from '@backstage/plugin-catalog';
+import {
+  CatalogImportPage,
+  catalogImportPlugin,
+} from '@backstage/plugin-catalog-import';
+import { ScaffolderPage, scaffolderPlugin } from '@backstage/plugin-scaffolder';
+import { orgPlugin } from '@backstage/plugin-org';
+import { SearchPage } from '@backstage/plugin-search';
+import {
+  TechDocsIndexPage,
+  techdocsPlugin,
+  TechDocsReaderPage,
+} from '@backstage/plugin-techdocs';
+import { TechDocsAddons } from '@backstage/plugin-techdocs-react';
+import { ReportIssue } from '@backstage/plugin-techdocs-module-addons-contrib';
+import { UserSettingsPage } from '@backstage/plugin-user-settings';
+import { apis } from './apis';
+import { entityPage } from './components/catalog/EntityPage';
+import { searchPage } from './components/search/SearchPage';
+import { Root } from './components/Root';
+
+import {
+  AlertDisplay,
+  OAuthRequestDialog,
+  SignInPage,
+} from '@backstage/core-components';
+import { createApp } from '@backstage/app-defaults';
+import { AppRouter, FlatRoutes } from '@backstage/core-app-api';
+import { CatalogGraphPage } from '@backstage/plugin-catalog-graph';
+import { RequirePermission } from '@backstage/plugin-permission-react';
+import { catalogEntityCreatePermission } from '@backstage/plugin-catalog-common/alpha';
+import { NotificationsPage } from '@backstage/plugin-notifications';
+import { SignalsDisplay } from '@backstage/plugin-signals';
+import { MyDataPageNew, MyDataComponent } from '@internal/backstage-plugin-my-data';
+import { WCDPage } from '@internal/backstage-plugin-wcd';
+import { WcdPanelPage } from '@internal/backstage-plugin-wcd-panel';
+
+const customColumnsFunc: CatalogTableColumnsFunc = entityListContext => {
+  // Get the default columns provided by Backstage
+  const defaultColumns = CatalogTable.defaultColumnsFunc(entityListContext);
+
+  // Add your custom Compliance column
+  return [
+    ...defaultColumns,
+    {
+      title: 'Compliance',
+      render: (entity: any) => {
+	const metadata = entity?.metadata || entity?.entity?.metadata;
+	if (!metadata) {
+          console.log('Unexpected Entity Structure:', entity);
+    	  return <span style={{ color: '#999' }}>Loading...</span>;
+	}
+	const annotations = metadata.annotations || {};
+        const status = annotations['compliance-status'];
+        const displayStatus = status ? status : 'PENDING';
+        const isApproved = displayStatus === 'APPROVED';
+        
+        return (
+          <span style={{ 
+            color: isApproved ? '#2e7d32' : '#c62828',
+            fontWeight: 'bold',
+            textTransform: 'uppercase',
+            fontSize: '0.75rem'
+          }}>
+            {displayStatus}
+          </span>
+        );
+      },
+    },
+  ];
+};
+
+const app = createApp({
+  apis,
+  bindRoutes({ bind }) {
+    bind(catalogPlugin.externalRoutes, {
+      createComponent: scaffolderPlugin.routes.root,
+      viewTechDoc: techdocsPlugin.routes.docRoot,
+      createFromTemplate: scaffolderPlugin.routes.selectedTemplate,
+    });
+    bind(apiDocsPlugin.externalRoutes, {
+      registerApi: catalogImportPlugin.routes.importPage,
+    });
+    bind(scaffolderPlugin.externalRoutes, {
+      registerComponent: catalogImportPlugin.routes.importPage,
+      viewTechDoc: techdocsPlugin.routes.docRoot,
+    });
+    bind(orgPlugin.externalRoutes, {
+      catalogIndex: catalogPlugin.routes.catalogIndex,
+    });
+  },
+  components: {
+    //SignInPage: props => <SignInPage {...props} auto providers={['guest']} />, satyakama-change
+    SignInPage: props => (
+      <SignInPage
+        {...props}
+        auto
+        provider={{
+          id: 'github',
+          title: 'GitHub',
+          message: 'Sign in using GitHub',
+          apiRef: githubAuthApiRef,
+        }}
+/*          providers={[
+          'guest', // This enables the Guest login button
+          {
+            id: 'github',
+            title: 'GitHub',
+            message: 'Sign in using GitHub',
+            apiRef: githubAuthApiRef,
+          },
+         ]}*/
+      />
+    ),
+  },
+});
+
+const routes = (
+  <FlatRoutes>
+    <Route path="/" element={<Navigate to="catalog" />} />
+    <Route path="/catalog" element={<CatalogIndexPage columns={customColumnsFunc}/>} />
+    <Route
+      path="/catalog/:namespace/:kind/:name"
+      element={<CatalogEntityPage />}
+    >
+      {entityPage}
+    </Route>
+    <Route path="/fossa" element={<FossaPage />} />
+    <Route path="/docs" element={<TechDocsIndexPage />} />
+    <Route
+      path="/docs/:namespace/:kind/:name/*"
+      element={<TechDocsReaderPage />}
+    >
+      <TechDocsAddons>
+        <ReportIssue />
+      </TechDocsAddons>
+    </Route>
+    <Route path="/create" element={<ScaffolderPage />} />
+    <Route path="/api-docs" element={<ApiExplorerPage />} />
+    <Route
+      path="/catalog-import"
+      element={
+        <RequirePermission permission={catalogEntityCreatePermission}>
+          <CatalogImportPage />
+        </RequirePermission>
+      }
+    />
+    <Route path="/search" element={<SearchPage />}>
+      {searchPage}
+    </Route>
+    <Route path="/settings" element={<UserSettingsPage />} />
+    <Route path="/catalog-graph" element={<CatalogGraphPage />} />
+    <Route path="/notifications" element={<NotificationsPage />} />
+    <Route path="/wcd" element={<WCDPage />} />
+    <Route path="/wcd-panel" element={<WcdPanelPage />} />
+  </FlatRoutes>
+);
+
+    /* <Route path="/my-data-new" element={<MyDataPageNew />} /> */
+
+export default app.createRoot(
+  <>
+    <AlertDisplay />
+    <OAuthRequestDialog />
+    <SignalsDisplay />
+    <AppRouter>
+      <Root>{routes}</Root>
+    </AppRouter>
+  </>,
+);

@@ -1,0 +1,136 @@
+apiVersion: backstage.io/v1alpha1
+kind: User
+metadata:
+  name: dipankar-maitra-arch
+  namespace: default
+spec:
+  profile:
+    displayName: Dipankar
+  memberOf: [Wipro-Group-A, Wipro-Group-B, Wipro-Admins]
+  
+---
+apiVersion: backstage.io/v1alpha1
+kind: User
+metadata:
+  name: Thamizhanban-wipro
+  namespace: default
+spec:
+  profile:
+    displayName: Thami
+  memberOf: [Wipro-Group-A]
+
+---
+apiVersion: backstage.io/v1alpha1
+kind: User
+metadata:
+  name: rupesh-wipro
+  namespace: default
+spec:
+  profile:
+    displayName: Rupesh
+  memberOf: [Wipro-Group-A, Wipro-Group-B, Wipro-Admins]
+
+---
+apiVersion: backstage.io/v1alpha1
+kind: User
+metadata:
+  name: yuvraj-bhupati
+  namespace: default
+spec:
+  profile:
+    displayName: Yuvraj
+  memberOf: [Wipro-Group-B]
+
+---
+apiVersion: backstage.io/v1alpha1
+kind: User
+metadata:
+  name: kksinghwipro04
+  namespace: default
+spec:
+  profile:
+    displayName: Kamlesh
+  memberOf: [Wipro-Group-B]
+
+---
+apiVersion: backstage.io/v1alpha1
+kind: User
+metadata:
+  name: akundu6
+  namespace: default
+spec:
+  profile:
+    displayName: Amit
+  memberOf: [Wipro-Group-A, Wipro-Group-B, Wipro-Admins]
+
+---
+apiVersion: backstage.io/v1alpha1
+kind: User
+metadata:
+  name: sshashwat
+  namespace: default
+spec:
+  profile:
+    displayName: Satyakam
+  memberOf: [Wipro-Group-A, Wipro-Group-B, Wipro-Admins]
+
+---
+apiVersion: backstage.io/v1alpha1
+kind: User
+metadata:
+  name: wipPratik
+  namespace: default
+spec:
+  profile:
+    displayName: Pratik
+  memberOf: [Wipro-Group-A]
+
+---
+apiVersion: backstage.io/v1alpha1
+kind: User
+metadata:
+  name: aritrapaul3
+  namespace: default
+spec:
+  profile:
+    displayName: Aritra
+  memberOf: [Wipro-Group-A]
+
+---
+apiVersion: backstage.io/v1alpha1
+kind: Group
+metadata:
+  name: Wipro-Group-A
+spec:
+  type: team
+  children: []
+  
+---
+apiVersion: backstage.io/v1alpha1
+kind: Group
+metadata:
+  name: Wipro-Group-B
+spec:
+  type: team
+  children: []
+
+---
+apiVersion: backstage.io/v1alpha1
+kind: Group
+metadata:
+  name: Wipro-Admins
+spec:
+  type: team
+  children: []
+---
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: curtain
+  annotations:
+    github.com: github.com
+spec:
+  type: service
+  owner: Wipro-Group-B
+  lifecycle: experimental
+
