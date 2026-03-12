@@ -87,6 +87,17 @@ spec:
 
 ---
 apiVersion: backstage.io/v1alpha1
+kind: User
+metadata:
+  name: aritrapaul3
+  namespace: default
+spec:
+  profile:
+    displayName: Aritra
+  memberOf: [Wipro-Group-A]
+
+---
+apiVersion: backstage.io/v1alpha1
 kind: Group
 metadata:
   name: Wipro-Group-A
