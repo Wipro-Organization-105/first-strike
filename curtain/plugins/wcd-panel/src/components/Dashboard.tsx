@@ -1,94 +1,131 @@
-import React, { useRef, useState } from 'react'; // Fixed syntax error here
+import React, { useRef, useState } from 'react';
 import { useApi, configApiRef, githubAuthApiRef, alertApiRef } from '@backstage/core-plugin-api';
 import { Table, Progress, ResponseErrorPanel } from '@backstage/core-components';
-import { TextField, Button, CircularProgress } from '@material-ui/core'; 
-import useAsync from 'react-use/lib/useAsync';
+import { TextField, Button, CircularProgress, IconButton, Box } from '@material-ui/core'; 
+import { useAsyncRetry } from 'react-use'; // Use retry version for both
+import DeleteIcon from '@material-ui/icons/Delete';
+import RefreshIcon from '@material-ui/icons/Refresh';
 
 export const Dashboard = () => {
   const configApi = useApi(configApiRef);
   const githubAuth = useApi(githubAuthApiRef);
   const alertApi = useApi(alertApiRef);
-
+  
+  const backendUrl = configApi.getString('backend.baseUrl');
   const inputRefs = useRef<Record<string, HTMLInputElement | null>>({});
   const [isProvisioning, setIsProvisioning] = useState<string | null>(null);
 
-  // 1. Fetch Available Templates (Top Table)
-  const { value: templatesData, loading: loadingTemplates, error: errorTemplates } = useAsync(async () => {
+  // 1. Fetch User Workspaces (Converted to useAsyncRetry)
+  const { 
+    value: workspaceList, 
+    loading: loadingWS, 
+    retry: reloadWS, 
+    error: errorWS 
+  } = useAsyncRetry(async () => {
     const token = await githubAuth.getAccessToken(['read:user']);
-    const baseUrl = configApi.getString('backend.baseUrl');
-    const response = await fetch(`${baseUrl}/api/proxy/wcd-api/status`, {
-      headers: { 'Authorization': `Bearer ${token}` }
-    });
-    if (!response.ok) throw new Error('Failed to fetch status');
-    return response.json();
-  }, []);
-
-  // 2. Fetch User Workspaces (Bottom Table)
-  // FIX: Change 'reload: reloadWS' to 'retry: reloadWS'
-  const { value: workspaceList, loading: loadingWS, retry: reloadWS, error: errorWS } = useAsync(async () => {
-    const token = await githubAuth.getAccessToken(['read:user']);
-    const baseUrl = configApi.getString('backend.baseUrl');
-    const response = await fetch(`${baseUrl}/api/proxy/wcd-api/workspaces`, {
+    const response = await fetch(`${backendUrl}/api/proxy/wcd-api/workspaces`, {
       headers: { 'Authorization': `Bearer ${token}` }
     });
     if (!response.ok) throw new Error('Failed to fetch workspaces');
     return response.json();
-  }, []);
+  }, [backendUrl]);
+
+  // 2. Fetch Available Templates (Converted to useAsyncRetry)
+  const { 
+    value: templatesData, 
+    loading: loadingTemplates, 
+    retry: reloadTemplates, 
+    error: errorTemplates 
+  } = useAsyncRetry(async () => {
+    const token = await githubAuth.getAccessToken(['read:user']);
+    const response = await fetch(`${backendUrl}/api/proxy/wcd-api/status`, {
+      headers: { 'Authorization': `Bearer ${token}` }
+    });
+    if (!response.ok) throw new Error('Failed to fetch status');
+    return response.json();
+  }, [backendUrl]);
+
+  const handleRefreshAll = () => {
+    reloadWS();
+    reloadTemplates();
+  };
+
+  const handleDelete = async (name: string) => {
+    if (!window.confirm(`Are you sure you want to delete ${name}?`)) return;
+    try {
+      const token = await githubAuth.getAccessToken(['read:user']);
+      const response = await fetch(`${backendUrl}/api/proxy/wcd-api/workspaces/${name}`, { 
+        method: 'DELETE',
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      if (!response.ok) throw new Error('Delete failed');
+      alertApi.post({ message: `Deleted ${name}`, severity: 'success' });
+      reloadWS(); 
+    } catch (e: any) {
+      alertApi.post({ message: e.message, severity: 'error' });
+    }
+  };
+
+  const handleUpdate = async (name: string, template: string) => {
+    try {
+      const token = await githubAuth.getAccessToken(['read:user']);
+      const response = await fetch(`${backendUrl}/api/proxy/wcd-api/workspaces/${name}?template_name=${template}`, {
+        method: 'PUT',
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      if (!response.ok) throw new Error('Update failed');
+      alertApi.post({ message: `Update triggered for ${name}`, severity: 'info' });
+      reloadWS();
+    } catch (e: any) {
+      alertApi.post({ message: e.message, severity: 'error' });
+    }
+  };
 
   const handleProvision = async (templateName: string) => {
     const workspaceName = inputRefs.current[templateName]?.value;
-
-    if (!workspaceName || workspaceName.trim() === '') {
+    if (!workspaceName?.trim()) {
       alertApi.post({ message: 'Please enter a workspace name', severity: 'error' });
       return;
     }
-    
-    // Start Loading
     setIsProvisioning(templateName);
-
     try {
       const token = await githubAuth.getAccessToken(['read:user']);
-      const baseUrl = configApi.getString('backend.baseUrl');
-      const response = await fetch(`${baseUrl}/api/proxy/wcd-api/provision`, {
+      const response = await fetch(`${backendUrl}/api/proxy/wcd-api/provision`, {
         method: 'POST',
         headers: { 
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json' 
         },
-        body: JSON.stringify({
-          template_name: templateName,
-          workspace_name: workspaceName
-        })
+        body: JSON.stringify({ template_name: templateName, workspace_name: workspaceName })
       });
-
       if (!response.ok) throw new Error(await response.text());
-      
       alertApi.post({ message: `Successfully provisioned ${workspaceName}`, severity: 'success' });
-      
-      // Clear input
-      if (inputRefs.current[templateName]) {
-          inputRefs.current[templateName]!.value = '';
-      }
-      
-      // Trigger refresh of the bottom table
+      if (inputRefs.current[templateName]) inputRefs.current[templateName]!.value = '';
       reloadWS(); 
-
     } catch (e: any) {
       alertApi.post({ message: e.message, severity: 'error' });
     } finally {
-      // Stop Loading
       setIsProvisioning(null);
     }
   };
 
-  // UI state checks
   if (loadingTemplates || loadingWS) return <Progress />;
-  if (errorTemplates) return <ResponseErrorPanel error={errorTemplates} />;
-  if (errorWS) return <ResponseErrorPanel error={errorWS} />;
+  if (errorTemplates || errorWS) return <ResponseErrorPanel error={(errorTemplates || errorWS)!} />;
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem', padding: '20px' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', padding: '10px' }}>
       
+      {/* Global Refresh Button */}
+      <Box display="flex" justifyContent="flex-end">
+        <Button 
+          startIcon={<RefreshIcon />} 
+          variant="outlined" 
+          onClick={handleRefreshAll}
+        >
+          Refresh All Data
+        </Button>
+      </Box>
+
       <Table
         title="Available Terraform Templates"
         data={templatesData?.available_templates?.map((t: string) => ({ name: t })) || []}
@@ -98,10 +135,7 @@ export const Dashboard = () => {
             title: 'Desired Workspace Name',
             render: (row: any) => (
               <TextField
-                variant="outlined"
-                size="small"
-                placeholder="e.g. prod-web-server"
-                // Disable input while any provisioning is happening
+                variant="outlined" size="small" placeholder="e.g. yocto-prod"
                 disabled={isProvisioning !== null}
                 inputRef={(el) => (inputRefs.current[row.name] = el)}
               />
@@ -111,14 +145,11 @@ export const Dashboard = () => {
             title: 'Action',
             render: (row: any) => (
               <Button
-                variant="contained"
-                color="primary"
-                // Disable button if ANY provisioning is happening
+                variant="contained" color="primary"
                 disabled={isProvisioning !== null}
                 onClick={() => handleProvision(row.name)}
-                startIcon={isProvisioning === row.name ? <CircularProgress size={20} color="inherit" /> : null}
               >
-              {isProvisioning === row.name ? 'Provisioning...' : 'Provision'}
+                {isProvisioning === row.name ? <CircularProgress size={20} /> : 'Provision'}
               </Button>
             ),
           },
@@ -128,22 +159,41 @@ export const Dashboard = () => {
 
       <Table
         title="Your Active Workspaces"
-        options={{ paging: true, search: true }}
         data={workspaceList || []}
         columns={[
           { title: 'Workspace Name', field: 'workspace_name', highlight: true },
           { title: 'Template Used', field: 'template' },
-          {
-            title: 'Created At',
-            field: 'timestamp',
-            render: (row: any) => row.timestamp ? new Date(row.timestamp).toLocaleString() : 'N/A'
-          },
           { title: 'Status', field: 'status' },
-          { title: 'Created Resource', field: 'pod' }
+          { title: 'Created Resource', field: 'pod' },
+          { 
+            title: 'Created on', 
+            field: 'timestamp',
+            render: (rowData: any) => rowData.timestamp 
+              ? new Date(rowData.timestamp).toLocaleString() 
+              : 'N/A'
+          },
+          { 
+            title: 'Actions',
+            render: (rowData: any) => (
+              <>
+                <IconButton
+                  onClick={() => handleUpdate(rowData.workspace_name, rowData.template)}
+                  color="primary" title="Update Workspace"
+                >
+                  <RefreshIcon />
+                </IconButton>
+                <IconButton
+                  onClick={() => handleDelete(rowData.workspace_name)}
+                  color="secondary" title="Delete Workspace"
+                >
+                  <DeleteIcon />
+                </IconButton>
+              </>
+            ),
+          },
         ]}
+        options={{ paging: true, search: true }}
       />
     </div>
   );
 };
-
-//export const ExampleComponent = Dashboard;
