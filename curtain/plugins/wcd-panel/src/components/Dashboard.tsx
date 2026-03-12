@@ -5,6 +5,7 @@ import { TextField, Button, CircularProgress, IconButton, Box } from '@material-
 import { useAsyncRetry } from 'react-use'; // Use retry version for both
 import DeleteIcon from '@material-ui/icons/Delete';
 import RefreshIcon from '@material-ui/icons/Refresh';
+import GetAppIcon from '@material-ui/icons/GetApp';
 
 export const Dashboard = () => {
   const configApi = useApi(configApiRef);
@@ -15,7 +16,6 @@ export const Dashboard = () => {
   const inputRefs = useRef<Record<string, HTMLInputElement | null>>({});
   const [isProvisioning, setIsProvisioning] = useState<string | null>(null);
 
-  // 1. Fetch User Workspaces (Converted to useAsyncRetry)
   const { 
     value: workspaceList, 
     loading: loadingWS, 
@@ -30,7 +30,7 @@ export const Dashboard = () => {
     return response.json();
   }, [backendUrl]);
 
-  // 2. Fetch Available Templates (Converted to useAsyncRetry)
+  // 2. Fetch Available Templates
   const { 
     value: templatesData, 
     loading: loadingTemplates, 
@@ -108,6 +108,31 @@ export const Dashboard = () => {
       setIsProvisioning(null);
     }
   };
+
+  //Download kubeconfig
+  const handleDownloadConfig = async (workspaceName: string) => {
+  try {
+    const token = await githubAuth.getAccessToken(['read:user']);
+    const response = await fetch(`${backendUrl}/api/proxy/wcd-api/workspaces/${workspaceName}/config`, {
+      headers: { 'Authorization': `Bearer ${token}` }
+    });
+
+    if (!response.ok) throw new Error('Failed to fetch kubeconfig');
+
+    const configData = await response.json();
+    const blob = new Blob([JSON.stringify(configData, null, 2)], { type: 'application/json' });
+    const url = window.URL.createObjectURL(blob);
+
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', `${workspaceName}.kubeconfig`);
+    document.body.appendChild(link);
+    link.click();
+    link.parentNode?.removeChild(link);
+  } catch (e: any) {
+    alertApi.post({ message: `Download failed: ${e.message}`, severity: 'error' });
+  }
+};
 
   if (loadingTemplates || loadingWS) return <Progress />;
   if (errorTemplates || errorWS) return <ResponseErrorPanel error={(errorTemplates || errorWS)!} />;
@@ -187,6 +212,12 @@ export const Dashboard = () => {
                   color="secondary" title="Delete Workspace"
                 >
                   <DeleteIcon />
+                </IconButton>
+		<IconButton
+                 onClick={() => handleDownloadConfig(rowData.workspace_name)}
+                 color="default" title="Download Kubeconfig"
+                >
+                <GetAppIcon />
                 </IconButton>
               </>
             ),
