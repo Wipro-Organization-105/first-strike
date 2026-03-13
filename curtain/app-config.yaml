@@ -63,7 +63,8 @@ proxy:
       Accept: application/json
   endpoints:
     '/wcd-api':
-      target: http://65.1.145.172:1276
+      #target: http://65.1.145.172:1276
+      target: http://172.31.24.40:1276
       changeOrigin: true
       skipAllowedRequests: true
       credentials: dangerously-allow-unauthenticated
@@ -115,9 +116,12 @@ auth:
         signIn:
           resolvers:
             - resolver: usernameMatchingUserEntityName
+              dangerouslyAllowSignInWithoutUserInCatalog: true
 
 scaffolder:
   # see https://backstage.io/docs/features/software-templates/configuration for software template options
+  workingDirectory: /tmp/backstage-scaffolder
+
 
 catalog:
   import:
@@ -138,10 +142,12 @@ catalog:
     - type: file
       target: ../../examples/entities.yaml
     # Workspace template
-    - type: file
-      target: ../../terraform-template/template/template.yaml
-      rules:
-        - allow: [Template]
+    #- type: file
+    #  target: ../../terraform-template/template/template.yaml
+    #  rules:
+    #    - allow: [Template]
+    #- type: url
+    #  target: https://github.com/Wipro-Organization-105/WeCollab/blob/main/bs-software-templates/workspace-create/location.yaml
     # Dockerfile template
     - type: file
       target: ../../dockerfile-template/template/template.yaml
@@ -153,10 +159,10 @@ catalog:
       rules:
         - allow: [Template]
     # Local example template
-    - type: file
-      target: ../../examples/template/template.yaml
-      rules:
-        - allow: [Template]
+    #- type: file
+    #  target: ../../examples/template/template.yaml
+    #  rules:
+    #    - allow: [Template]
 
     # Local example organizational data
     #- type: file

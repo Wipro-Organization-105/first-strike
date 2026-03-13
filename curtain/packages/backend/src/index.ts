@@ -149,4 +149,5 @@ backend.add(import('@backstage/plugin-auth-backend-module-github-provider'));
 //backend.add(import('@internal/backstage-plugin-my-data-backend'));
 //backend.add(import('@internal/backstage-plugin-wcd-backend'));
 backend.add(import('@internal/backstage-plugin-wcd-backend'));
+//backend.add(import('@internal/backstage-plugin-scaffolder-backend-module-shell-script-action'));
 backend.start();

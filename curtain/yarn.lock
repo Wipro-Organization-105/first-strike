@@ -2504,7 +2504,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@backstage/backend-test-utils@npm:^1.10.2":
+"@backstage/backend-test-utils@npm:^1.10.2, @backstage/backend-test-utils@npm:^1.11.0":
   version: 1.11.0
   resolution: "@backstage/backend-test-utils@npm:1.11.0"
   dependencies:
@@ -4512,6 +4512,28 @@ __metadata:
     uri-template: "npm:^2.0.0"
     zen-observable: "npm:^0.10.0"
   checksum: 10c0/b53e649863fe0484cc0381519fad60c5344fee72e961ef47666d38c3b9b9b7cf83847fd29c20d7b6dde386ba322bbe8ecd3d460d4f68b1a28e2606805ad52b4f
+  languageName: node
+  linkType: hard
+
+"@backstage/plugin-scaffolder-node-test-utils@npm:^0.3.6":
+  version: 0.3.8
+  resolution: "@backstage/plugin-scaffolder-node-test-utils@npm:0.3.8"
+  dependencies:
+    "@backstage/backend-plugin-api": "npm:^1.7.0"
+    "@backstage/backend-test-utils": "npm:^1.11.0"
+    "@backstage/plugin-scaffolder-node": "npm:^0.12.5"
+    "@backstage/types": "npm:^1.2.2"
+    winston: "npm:^3.2.1"
+    winston-transport: "npm:^4.7.0"
+  peerDependencies:
+    "@types/react": ^17.0.0 || ^18.0.0
+    react: ^17.0.0 || ^18.0.0
+    react-dom: ^17.0.0 || ^18.0.0
+    react-router-dom: ^6.30.2
+  peerDependenciesMeta:
+    "@types/react":
+      optional: true
+  checksum: 10c0/8e00aecca5af88d80bd34f3dd51f945d6c357cd83d6d79430ccad04f6a20c0b76abeba65700abef10f5b1c44c0a453f8cec12764ddd9c54e3eeec4b6db3a5b5e
   languageName: node
   linkType: hard
 
@@ -6765,6 +6787,17 @@ __metadata:
     react: ^16.13.1 || ^17.0.0 || ^18.0.0
     react-dom: ^16.13.1 || ^17.0.0 || ^18.0.0
     react-router-dom: ^6.0.0
+  languageName: unknown
+  linkType: soft
+
+"@internal/backstage-plugin-scaffolder-backend-module-shell-script-action@workspace:^, @internal/backstage-plugin-scaffolder-backend-module-shell-script-action@workspace:plugins/scaffolder-backend-module-shell-script-action":
+  version: 0.0.0-use.local
+  resolution: "@internal/backstage-plugin-scaffolder-backend-module-shell-script-action@workspace:plugins/scaffolder-backend-module-shell-script-action"
+  dependencies:
+    "@backstage/backend-plugin-api": "npm:^1.6.0"
+    "@backstage/cli": "npm:^0.35.0"
+    "@backstage/plugin-scaffolder-node": "npm:^0.12.2"
+    "@backstage/plugin-scaffolder-node-test-utils": "npm:^0.3.6"
   languageName: unknown
   linkType: soft
 
@@ -16853,6 +16886,7 @@ __metadata:
     "@backstage/plugin-techdocs-backend": "npm:^2.1.3"
     "@coder/backstage-plugin-devcontainers-backend": "npm:^0.1.1"
     "@internal/backstage-plugin-my-data-backend": "workspace:*"
+    "@internal/backstage-plugin-scaffolder-backend-module-shell-script-action": "workspace:^"
     "@internal/backstage-plugin-wcd-backend": "workspace:^"
     "@veecode-platform/backstage-plugin-github-workflows-backend": "npm:^1.3.6"
     app: "link:../app"
