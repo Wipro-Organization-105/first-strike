@@ -16,7 +16,8 @@ export const WcdPanelPage = wcdPanelPlugin.provide(
   createRoutableExtension({
     name: 'WcdPanelPage',
     component: () =>
-      import('./components/ExampleComponent').then(m => m.TerraformStatus),
+      //import('./components/ExampleComponent').then(m => m.TerraformStatus),
+      import('./components/ExampleComponent/ExampleComponent').then(m => m.ExampleComponent),
     mountPoint: rootRouteRef,
   }),
 );
