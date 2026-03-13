@@ -48,6 +48,7 @@
     "@backstage/plugin-techdocs-backend": "^2.1.3",
     "@coder/backstage-plugin-devcontainers-backend": "^0.1.1",
     "@internal/backstage-plugin-my-data-backend": "workspace:*",
+    "@internal/backstage-plugin-scaffolder-backend-module-shell-script-action": "workspace:^",
     "@internal/backstage-plugin-wcd-backend": "workspace:^",
     "@veecode-platform/backstage-plugin-github-workflows-backend": "^1.3.6",
     "app": "link:../app",
