@@ -2,7 +2,7 @@ import React, { useRef, useState } from 'react';
 import { useApi, configApiRef, githubAuthApiRef, alertApiRef } from '@backstage/core-plugin-api';
 import { Table, Progress, ResponseErrorPanel } from '@backstage/core-components';
 import { TextField, Button, CircularProgress, IconButton, Box } from '@material-ui/core'; 
-import { useAsyncRetry } from 'react-use'; // Use retry version for both
+import { useAsyncRetry } from 'react-use';
 import DeleteIcon from '@material-ui/icons/Delete';
 import RefreshIcon from '@material-ui/icons/Refresh';
 import GetAppIcon from '@material-ui/icons/GetApp';
@@ -15,7 +15,9 @@ export const Dashboard = () => {
   const backendUrl = configApi.getString('backend.baseUrl');
   const inputRefs = useRef<Record<string, HTMLInputElement | null>>({});
   const [isProvisioning, setIsProvisioning] = useState<string | null>(null);
+  const [activeAction, setActiveAction] = useState<{name: string, type: 'delete' | 'update'} | null>(null);
 
+  // 1. Fetch User Workspaces
   const { 
     value: workspaceList, 
     loading: loadingWS, 
@@ -52,6 +54,7 @@ export const Dashboard = () => {
 
   const handleDelete = async (name: string) => {
     if (!window.confirm(`Are you sure you want to delete ${name}?`)) return;
+    setActiveAction({ name, type: 'delete' });
     try {
       const token = await githubAuth.getAccessToken(['read:user']);
       const response = await fetch(`${backendUrl}/api/proxy/wcd-api/workspaces/${name}`, { 
@@ -60,13 +63,16 @@ export const Dashboard = () => {
       });
       if (!response.ok) throw new Error('Delete failed');
       alertApi.post({ message: `Deleted ${name}`, severity: 'success' });
-      reloadWS(); 
+      await reloadWS(); 
     } catch (e: any) {
       alertApi.post({ message: e.message, severity: 'error' });
+    } finally {
+      setActiveAction(null);
     }
   };
 
   const handleUpdate = async (name: string, template: string) => {
+    setActiveAction({ name, type: 'update' });
     try {
       const token = await githubAuth.getAccessToken(['read:user']);
       const response = await fetch(`${backendUrl}/api/proxy/wcd-api/workspaces/${name}?template_name=${template}`, {
@@ -74,10 +80,12 @@ export const Dashboard = () => {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       if (!response.ok) throw new Error('Update failed');
-      alertApi.post({ message: `Update triggered for ${name}`, severity: 'info' });
-      reloadWS();
+      alertApi.post({ message: `Update successful for ${name}`, severity: 'info' });
+      await reloadWS();
     } catch (e: any) {
       alertApi.post({ message: e.message, severity: 'error' });
+    } finally {
+      setActiveAction(null);
     }
   };
 
@@ -101,7 +109,7 @@ export const Dashboard = () => {
       if (!response.ok) throw new Error(await response.text());
       alertApi.post({ message: `Successfully provisioned ${workspaceName}`, severity: 'success' });
       if (inputRefs.current[templateName]) inputRefs.current[templateName]!.value = '';
-      reloadWS(); 
+      await reloadWS(); 
     } catch (e: any) {
       alertApi.post({ message: e.message, severity: 'error' });
     } finally {
@@ -109,30 +117,26 @@ export const Dashboard = () => {
     }
   };
 
-  //Download kubeconfig
   const handleDownloadConfig = async (workspaceName: string) => {
-  try {
-    const token = await githubAuth.getAccessToken(['read:user']);
-    const response = await fetch(`${backendUrl}/api/proxy/wcd-api/workspaces/${workspaceName}/config`, {
-      headers: { 'Authorization': `Bearer ${token}` }
-    });
-
-    if (!response.ok) throw new Error('Failed to fetch kubeconfig');
-
-    const configData = await response.json();
-    const blob = new Blob([JSON.stringify(configData, null, 2)], { type: 'application/json' });
-    const url = window.URL.createObjectURL(blob);
-
-    const link = document.createElement('a');
-    link.href = url;
-    link.setAttribute('download', `${workspaceName}.kubeconfig`);
-    document.body.appendChild(link);
-    link.click();
-    link.parentNode?.removeChild(link);
-  } catch (e: any) {
-    alertApi.post({ message: `Download failed: ${e.message}`, severity: 'error' });
-  }
-};
+    try {
+      const token = await githubAuth.getAccessToken(['read:user']);
+      const response = await fetch(`${backendUrl}/api/proxy/wcd-api/workspaces/${workspaceName}/config`, {
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      if (!response.ok) throw new Error('Failed to fetch kubeconfig');
+      const configData = await response.json();
+      const blob = new Blob([JSON.stringify(configData, null, 2)], { type: 'application/json' });
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', `${workspaceName}.kubeconfig`);
+      document.body.appendChild(link);
+      link.click();
+      link.parentNode?.removeChild(link);
+    } catch (e: any) {
+      alertApi.post({ message: `Download failed: ${e.message}`, severity: 'error' });
+    }
+  };
 
   if (loadingTemplates || loadingWS) return <Progress />;
   if (errorTemplates || errorWS) return <ResponseErrorPanel error={(errorTemplates || errorWS)!} />;
@@ -140,12 +144,12 @@ export const Dashboard = () => {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', padding: '10px' }}>
       
-      {/* Global Refresh Button */}
       <Box display="flex" justifyContent="flex-end">
         <Button 
           startIcon={<RefreshIcon />} 
           variant="outlined" 
           onClick={handleRefreshAll}
+          disabled={activeAction !== null || isProvisioning !== null}
         >
           Refresh All Data
         </Button>
@@ -171,10 +175,10 @@ export const Dashboard = () => {
             render: (row: any) => (
               <Button
                 variant="contained" color="primary"
-                disabled={isProvisioning !== null}
+                disabled={isProvisioning !== null || activeAction !== null}
                 onClick={() => handleProvision(row.name)}
               >
-                {isProvisioning === row.name ? <CircularProgress size={20} /> : 'Provision'}
+                {isProvisioning === row.name ? <CircularProgress size={20} color="inherit" /> : 'Provision'}
               </Button>
             ),
           },
@@ -199,28 +203,48 @@ export const Dashboard = () => {
           },
           { 
             title: 'Actions',
-            render: (rowData: any) => (
-              <>
-                <IconButton
-                  onClick={() => handleUpdate(rowData.workspace_name, rowData.template)}
-                  color="primary" title="Update Workspace"
-                >
-                  <RefreshIcon />
-                </IconButton>
-                <IconButton
-                  onClick={() => handleDelete(rowData.workspace_name)}
-                  color="secondary" title="Delete Workspace"
-                >
-                  <DeleteIcon />
-                </IconButton>
-		<IconButton
-                 onClick={() => handleDownloadConfig(rowData.workspace_name)}
-                 color="default" title="Download Kubeconfig"
-                >
-                <GetAppIcon />
-                </IconButton>
-              </>
-            ),
+            render: (rowData: any) => {
+              const isProcessing = activeAction?.name === rowData.workspace_name;
+              const anyActionHappening = activeAction !== null;
+
+              return (
+                <Box display="flex" alignItems="center">
+                  <IconButton
+                    onClick={() => handleUpdate(rowData.workspace_name, rowData.template)}
+                    color="primary"
+                    title="Update Workspace"
+                    disabled={anyActionHappening}
+                  >
+                    {isProcessing && activeAction?.type === 'update' ? (
+                      <CircularProgress size={20} />
+                    ) : (
+                      <RefreshIcon />
+                    )}
+                  </IconButton>
+
+                  <IconButton
+                    onClick={() => handleDelete(rowData.workspace_name)}
+                    color="secondary"
+                    title="Delete Workspace"
+                    disabled={anyActionHappening}
+                  >
+                    {isProcessing && activeAction?.type === 'delete' ? (
+                      <CircularProgress size={20} />
+                    ) : (
+                      <DeleteIcon />
+                    )}
+                  </IconButton>
+
+                  <IconButton
+                    onClick={() => handleDownloadConfig(rowData.workspace_name)}
+                    title="Download Kubeconfig"
+                    disabled={anyActionHappening}
+                  >
+                    <GetAppIcon />
+                  </IconButton>
+                </Box>
+              );
+            },
           },
         ]}
         options={{ paging: true, search: true }}
@@ -228,3 +252,4 @@ export const Dashboard = () => {
     </div>
   );
 };
+
