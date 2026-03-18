@@ -6,7 +6,7 @@ import { Admin } from '../Admin';
 export const ExampleComponent = () => {
   return (
     <Page themeId="tool">
-      <Header title="WeCollaborate Panel" subtitle="Infrastructure Management">
+      <Header title="WeCollaborate" subtitle="Infrastructure Management">
         <HeaderLabel label="Owner" value="Platform Team" />
         <HeaderLabel label="Lifecycle" value="Production" />
       </Header>
