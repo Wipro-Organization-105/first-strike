@@ -4,8 +4,8 @@ import HomeIcon from '@material-ui/icons/Home';
 import ExtensionIcon from '@material-ui/icons/Extension';
 import LibraryBooks from '@material-ui/icons/LibraryBooks';
 import CreateComponentIcon from '@material-ui/icons/AddCircleOutline';
-import LogoFull from './LogoFull';
-import LogoIcon from './LogoIcon';
+import { LogoFull } from './LogoFull';
+import { LogoIcon } from './LogoIcon';
 import {
   Settings as SidebarSettings,
   UserSettingsSignInAvatar,
