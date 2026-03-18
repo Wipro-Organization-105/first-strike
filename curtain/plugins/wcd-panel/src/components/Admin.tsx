@@ -11,20 +11,10 @@ export const Admin = () => {
   const backendUrl = configApi.getString('backend.baseUrl');
 
   const [filename, setFilename] = useState('');
+  const [folderName, setFolderName] = useState('');
   const [content, setContent] = useState('');
   const [selectedGroups, setSelectedGroups] = useState<string[]>([]);
-  const [availableGroups, setAvailableGroups] = useState<string[]>(['dev', 'ops', 'admin', 'qa']); // TBD: Should be fetched from usr2grp JSON
-  //const { value: isAdmin, loading } = useAsync(async () => {
-  //  const token = await githubAuth.getAccessToken(['read:user']);
-   // const response = await fetch(`${backendUrl}/api/proxy/wcd-api/status`, {
- //     headers: { 'Authorization': `Bearer ${token}` }
-  //  });
-//    const data = await response.json();
-
-    // Check if the user is part of the Wipro-Admins group
-    // This assumes your /status endpoint returns the user's groups
- //   return data.user_groups?.includes('Wipro-Admins');
- // }, []);
+  const [availableGroups, setAvailableGroups] = useState<string[]>([]); 
   const { value: statusData, loading, error } = useAsync(async () => {
     const token = await githubAuth.getAccessToken(['read:user']);
     const response = await fetch(`${backendUrl}/api/proxy/wcd-api/status`, {
@@ -35,6 +25,16 @@ export const Admin = () => {
   }, []);
   const isAdmin = statusData?.user_groups?.includes('Wipro-Admins');
 
+  useAsync(async () => {
+    if (!isAdmin) return;
+    const token = await githubAuth.getAccessToken(['read:user']);
+    const response = await fetch(`${backendUrl}/api/proxy/wcd-api/admin/groups`, {
+      headers: { 'Authorization': `Bearer ${token}` }
+    });
+    if (response.ok) {
+      setAvailableGroups(await response.json());
+    }
+  }, [isAdmin]);
   if (loading) return <Progress />;
 
   if (error||!isAdmin) {
@@ -70,6 +70,7 @@ export const Admin = () => {
         body: JSON.stringify({
           filename,
           content,
+	  folder_name: folderName,
           groups: selectedGroups,
         }),
       });
@@ -93,6 +94,14 @@ export const Admin = () => {
               </Button>
 
               <TextField
+                label="Folder Name"
+                placeholder="e.g., Yocto android or ADAS etc."
+                value={folderName}
+                onChange={(e) => setFolderName(e.target.value)}
+                fullWidth
+              />
+
+              <TextField
                 label="Template Filename"
                 value={filename}
                 onChange={(e) => setFilename(e.target.value)}
@@ -110,7 +119,7 @@ export const Admin = () => {
               />
 
               <FormControl fullWidth>
-                <InputLabel>Assign to User Groups</InputLabel>
+                <InputLabel>Assign to User Groups (Multi-Select)</InputLabel>
                 <Select
                   multiple
                   value={selectedGroups}
