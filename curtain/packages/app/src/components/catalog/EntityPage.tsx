@@ -260,12 +260,12 @@ const serviceEntityPage = (
       {techdocsContent}
     </EntityLayout.Route>
 
-    <EntityLayout.Route path="/wcd" title="WCD">
-      <WCDPage />
-    </EntityLayout.Route>
   </EntityLayout>
 );
 
+    /*<EntityLayout.Route path="/wcd" title="WCD">
+      <WCDPage />
+    </EntityLayout.Route>*/
 const websiteEntityPage = (
   <EntityLayout>
     <EntityLayout.Route path="/" title="Overview">

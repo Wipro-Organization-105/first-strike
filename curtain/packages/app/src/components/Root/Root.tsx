@@ -67,16 +67,16 @@ export const Root = ({ children }: PropsWithChildren<{}>) => (
       <SidebarDivider />
       <SidebarGroup label="Menu" icon={<MenuIcon />}>
         {/* Global nav, not org-specific */}
-        <SidebarItem icon={HomeIcon} to="catalog" text="Home" />
+        <SidebarItem icon={HomeIcon} to="catalog" text="Github Repos" />
+	<SidebarItem
+        icon={MenuIcon}
+        to="wcd-panel"
+        text="CDE"
+        />
         <MyGroupsSidebarItem
           singularTitle="My Group"
           pluralTitle="My Groups"
           icon={GroupIcon}
-        />
-	<SidebarItem
-        icon={MenuIcon}
-        to="wcd-panel"
-        text="WCD Panel"
         />
         <SidebarItem icon={ExtensionIcon} to="api-docs" text="APIs" />
         <SidebarItem icon={LibraryBooks} to="docs" text="Docs" />
