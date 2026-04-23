@@ -1,4 +1,32 @@
 apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: Yocto-Pipeline
+  description: "Yocto Build Service"
+  links:
+    - url: http://3.109.199.151/
+      title: Grafana Dashboard
+      icon: dashboard
+    - url: http://3.108.251.3:8082/
+      title: Jfrog Artifactory
+      icon: star
+  annotations:
+    github.com: Wipro-Organization-105/first-strike
+    veecode-platform.com: Wipro-Organization-105/first-strike
+    #github.com: Wipro-Organization-105/first-strike
+    github.com/project-slug: Wipro-Organization-105/first-strike
+    github.com/workflows: Wipro-Organization-105/first-strike
+    compliance-status: "APPROVED"
+    license-type: "Apache-2.0"
+    backstage.io/techdocs-ref: dir:.
+    fossa.io/project-name: first-strike
+spec:
+  type: service
+  lifecycle: experimental
+  owner: Wipro-Group-B # Matches the Group name below
+
+---
+apiVersion: backstage.io/v1alpha1
 kind: User
 metadata:
   name: dipankar-maitra-arch
@@ -67,7 +95,7 @@ spec:
 apiVersion: backstage.io/v1alpha1
 kind: User
 metadata:
-  name: sshashwat
+  name: sshashwat # MUST match your GitHub username exactly
   namespace: default
 spec:
   profile:
@@ -87,24 +115,12 @@ spec:
 
 ---
 apiVersion: backstage.io/v1alpha1
-kind: User
-metadata:
-  name: aritrapaul3
-  namespace: default
-spec:
-  profile:
-    displayName: Aritra
-  memberOf: [Wipro-Group-A]
-
----
-apiVersion: backstage.io/v1alpha1
 kind: Group
 metadata:
   name: Wipro-Group-A
 spec:
   type: team
   children: []
-  
 ---
 apiVersion: backstage.io/v1alpha1
 kind: Group
@@ -122,15 +138,12 @@ metadata:
 spec:
   type: team
   children: []
+
 ---
 apiVersion: backstage.io/v1alpha1
-kind: Component
+kind: Group
 metadata:
-  name: curtain
-  annotations:
-    github.com: github.com
+  name: Wipro-Group-B
 spec:
-  type: service
-  owner: Wipro-Group-B
-  lifecycle: experimental
-
+  type: team
+  children: []
