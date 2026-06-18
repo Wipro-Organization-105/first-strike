@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useApi, githubAuthApiRef, configApiRef, alertApiRef } from '@backstage/core-plugin-api';
-import { Content, InfoCard, Progress, Table } from '@backstage/core-components';
+import { Content, InfoCard, Progress, ResponseErrorPanel, Table } from '@backstage/core-components';
 // Added IconButton and Table to the imports
-import { Grid, TextField, Button, MenuItem, Select, InputLabel, FormControl, Chip, IconButton } from '@material-ui/core';
+import { Grid, TextField, Button, MenuItem, Select, InputLabel, FormControl, Chip } from '@material-ui/core';
 import { useAsync, useAsyncRetry } from 'react-use';
 import DeleteIcon from '@material-ui/icons/Delete';
 
@@ -137,7 +137,7 @@ export const Admin = () => {
               <TextField label="Template Filename" value={filename} onChange={(e) => setFilename(sanitizeName(e.target.value))} fullWidth />
               <TextField label="Terraform Code Editor" multiline rows={8} variant="outlined" value={content} onChange={(e) => setContent(e.target.value)} fullWidth />
               <FormControl fullWidth>
-                <InputLabel>Assign to User Groups</InputLabel>
+                <InputLabel>Assign to User Groups (Multi-Select)</InputLabel>
                 <Select
                   multiple value={selectedGroups}
                   onChange={(e) => setSelectedGroups(e.target.value as string[])}
