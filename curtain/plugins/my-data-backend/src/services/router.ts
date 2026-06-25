@@ -41,7 +41,7 @@ export async function createRouter(
       // 3. Return the data to your Frontend
       response.json(data);
     } catch (error) {
-      logger.error('Failed to fetch data', error);
+      logger.error('Failed to fetch data', error as Error);
       response.status(500).json({ error: 'Failed to fetch data' });
     }
   });

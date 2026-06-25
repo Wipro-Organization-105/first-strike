@@ -134,3 +134,14 @@ spec:
   owner: Wipro-Group-B
   lifecycle: experimental
 
+---
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: WEGAAUTO
+  annotations:
+    dev.azure.com/project-repo: "WEGAAUTO/WEGAAUTO"
+spec:
+  type: service
+  owner: Wipro-Group-B
+  lifecycle: experimental

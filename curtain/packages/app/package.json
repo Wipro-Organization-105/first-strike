@@ -15,6 +15,7 @@
   },
   "dependencies": {
     "@adityasinghal26/plugin-github-codespaces": "^1.0.4",
+    "@backstage-community/plugin-azure-devops": "^0.28.2",
     "@backstage-community/plugin-fossa": "^0.10.0",
     "@backstage-community/plugin-github-actions": "^0.19.0",
     "@backstage-community/plugin-nexus-repository-manager": "^1.22.0",
@@ -46,6 +47,7 @@
     "@backstage/theme": "^0.7.1",
     "@backstage/ui": "^0.10.0",
     "@coder/backstage-plugin-devcontainers-react": "^0.1.2",
+    "@internal/backstage-plugin-az-task-monitoring-frontend": "workspace:^",
     "@internal/backstage-plugin-wcd": "workspace:^",
     "@internal/backstage-plugin-wcd-panel": "workspace:^",
     "@material-ui/core": "^4.12.2",

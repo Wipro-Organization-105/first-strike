@@ -1,0 +1,53 @@
+apiVersion: scaffolder.backstage.io/v1beta3
+kind: Template
+metadata:
+  name: multi-party-service
+  title: Multi-Party Secure Service
+  description: Create a new service with automated IP attribution and license headers.
+spec:
+  owner: group:default/wipro-admins
+  type: service
+  parameters:
+    - title: Provide Service Details
+      required: [name, owner, partyName]
+      properties:
+        name:
+          title: Service Name
+          type: string
+        owner:
+          title: Owner Group
+          type: string
+          ui:field: EntityPicker
+          ui:options:
+            catalogFilter:
+              kind: Group
+        partyName:
+          title: Initiating Party (Vendor/Internal)
+          type: string
+          enum: ['Wipro-Internal', 'Vendor-A', 'Partner-X']
+        licenseType:
+          title: License
+          type: string
+          default: 'Apache-2.0'
+  steps:
+    - id: template
+      name: Fetching Template Skeleton
+      action: fetch:template
+      input:
+        url: .
+        values:
+          partyName: ${{ parameters.partyName }}
+          owner: ${{ parameters.owner }}
+          licenseType: ${{ parameters.licenseType }}
+    - id: publish
+      name: Publishing to GitHub
+      action: publish:github
+      input:
+        description: 'New service created by ${{ parameters.partyName }}'
+        repoUrl: 'github.com/${{ parameters.name }}'
+    - id: register
+      name: Registering in Catalog
+      action: catalog:register
+      input:
+        repoContentsUrl: ${{ steps['publish'].output.repoContentsUrl }}
+        catalogInfoPath: '/catalog-info.yaml'

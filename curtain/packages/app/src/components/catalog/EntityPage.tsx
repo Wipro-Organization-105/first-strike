@@ -78,6 +78,11 @@ import { EntityGithubCodespacesCard,
 import { useEntity } from '@backstage/plugin-catalog-react';
 import { EntityFossaCard } from '@backstage-community/plugin-fossa';
 import { WCDPage } from '@internal/backstage-plugin-wcd';
+import {
+  EntityAzurePullRequestsContent,
+  EntityAzureGitTagsContent,
+  isAzureDevOpsAvailable
+} from '@backstage-community/plugin-azure-devops';
 
 const techdocsContent = (
   <EntityTechdocsContent>
@@ -258,6 +263,13 @@ const serviceEntityPage = (
 
     <EntityLayout.Route path="/docs" title="Docs">
       {techdocsContent}
+    </EntityLayout.Route>
+    <EntityLayout.Route if={isAzureDevOpsAvailable} path="/pull-requests" title="Pull Requests">
+      <EntityAzurePullRequestsContent defaultLimit={25} />
+    </EntityLayout.Route>
+
+    <EntityLayout.Route if={isAzureDevOpsAvailable} path="/git-tags" title="Git Tags">
+      <EntityAzureGitTagsContent />
     </EntityLayout.Route>
 
   </EntityLayout>
@@ -472,6 +484,7 @@ const domainPage = (
     </EntityLayout.Route>
   </EntityLayout>
 );
+
 
 export const entityPage = (
   <EntitySwitch>

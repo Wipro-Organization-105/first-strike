@@ -42,9 +42,10 @@ import { RequirePermission } from '@backstage/plugin-permission-react';
 import { catalogEntityCreatePermission } from '@backstage/plugin-catalog-common/alpha';
 import { NotificationsPage } from '@backstage/plugin-notifications';
 import { SignalsDisplay } from '@backstage/plugin-signals';
-import { MyDataPageNew, MyDataComponent } from '@internal/backstage-plugin-my-data';
+//import { MyDataPageNew, MyDataComponent } from '@internal/backstage-plugin-my-data';
 import { WCDPage } from '@internal/backstage-plugin-wcd';
 import { WcdPanelPage } from '@internal/backstage-plugin-wcd-panel';
+import { TaskMonitoringPage } from '@internal/backstage-plugin-az-task-monitoring-frontend';
 
 const customColumnsFunc: CatalogTableColumnsFunc = entityListContext => {
   // Get the default columns provided by Backstage
@@ -106,13 +107,13 @@ const app = createApp({
       <SignInPage
         {...props}
         auto
-        provider={{
+       /* provider={{
           id: 'github',
           title: 'GitHub',
           message: 'Sign in using GitHub',
           apiRef: githubAuthApiRef,
-        }}
-/*          providers={[
+        }}*/
+          providers={[
           'guest', // This enables the Guest login button
           {
             id: 'github',
@@ -120,7 +121,7 @@ const app = createApp({
             message: 'Sign in using GitHub',
             apiRef: githubAuthApiRef,
           },
-         ]}*/
+         ]}
       />
     ),
   },
@@ -164,6 +165,7 @@ const routes = (
     <Route path="/notifications" element={<NotificationsPage />} />
     <Route path="/wcd" element={<WCDPage />} />
     <Route path="/wcd-panel" element={<WcdPanelPage />} />
+    <Route path="/az-task-monitoring" element={<TaskMonitoringPage />} />
   </FlatRoutes>
 );
 

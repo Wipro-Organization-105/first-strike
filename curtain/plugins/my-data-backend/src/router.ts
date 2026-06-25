@@ -22,7 +22,7 @@ export interface RouterOptions {
   logger: LoggerService;
   config: Config;
   httpAuth: HttpAuthService;
-  todoList: TodoListService; // the actual service instance, not the ref
+  todoList: any; // the actual service instance, not the ref
 }
 
 export async function createRouter(options: RouterOptions): Promise<express.Router> {

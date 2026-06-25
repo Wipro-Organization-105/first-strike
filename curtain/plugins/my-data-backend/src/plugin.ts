@@ -17,12 +17,16 @@ export const myDataPlugin = createBackendPlugin({
       deps: {
         httpAuth: coreServices.httpAuth,
         httpRouter: coreServices.httpRouter,
+	logger: coreServices.logger,
+        config: coreServices.rootConfig,
         todoList: todoListServiceRef,
       },
-      async init({ httpAuth, httpRouter, todoList }) {
+      async init({ httpAuth, httpRouter, logger, config, todoList }) {
         httpRouter.use(
           await createRouter({
             httpAuth,
+            logger,
+	    config, 
             todoList,
           }),
         );

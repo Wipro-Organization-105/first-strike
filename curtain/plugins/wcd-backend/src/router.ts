@@ -1,6 +1,8 @@
 // plugins/wcd-backend/src/router.ts
 import { Router } from 'express';
-import { LoggerService, Config } from '@backstage/backend-plugin-api';
+//import { LoggerService, Config } from '@backstage/backend-plugin-api';
+import { LoggerService } from '@backstage/backend-plugin-api';
+import { Config } from '@backstage/config';
 
 /**
  * Creates and returns the Express router for the wcd backend plugin.
@@ -24,10 +26,10 @@ export async function createRouter(options: { logger: LoggerService; config: Con
         return res.status(502).json({ error: `Upstream error ${resp.status}` });
       }
       const json = await resp.json();
-      res.json(json);
+      return res.json(json);
     } catch (e: any) {
       logger.error(`Failed to fetch telemetry: ${String(e)}`);
-      res.status(500).json({ error: 'Failed to fetch telemetry' });
+      return res.status(500).json({ error: 'Failed to fetch telemetry' });
     }
   });
 

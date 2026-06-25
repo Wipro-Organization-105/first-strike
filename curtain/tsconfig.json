@@ -8,10 +8,18 @@
     "plugins/*/dev",
     "plugins/*/migrations"
   ],
-  "exclude": ["node_modules"],
+  "exclude": [
+	  "node_modules",
+	  "plugins/*-disabled",
+	  "**/*.test.ts",
+	  "**/*.test.tsx"
+  	],
   "compilerOptions": {
     "outDir": "dist-types",
     "rootDir": ".",
-    "jsx": "react-jsx"
+    "jsx": "react-jsx",
+    "noUnusedLocals": false,
+    "noUnusedParameters": false
+
   }
 }

@@ -33,7 +33,11 @@ backend:
     connection: ':memory:'
   # workingDirectory: /tmp # Use this to configure a working directory for the scaffolder, defaults to the OS temp-dir
 
-integrations:
+#integrations:
+#  azure:
+#    - host: dev.azure.com
+#      credentials:
+#        - personalAccessToken: ${AZURE_TOKEN}
   github:
     - host: github.com
       # This is a Personal Access Token or PAT from GitHub. You can find out how to generate this token, and more information
@@ -59,7 +63,7 @@ proxy:
   '/fossa':
     target: https://app.fossa.com/api
     headers:
-      Authorization: token ${FOSSA_API_TOKEN}
+      Authorization: Bearer ${FOSSA_API_TOKEN}
       Accept: application/json
   endpoints:
     '/wcd-api':
@@ -105,7 +109,9 @@ auth:
   environment: development
   providers:
     # See https://backstage.io/docs/auth/guest/provider
-    # guest: {}
+    guest:
+      development:
+        dangerouslyAllowOutsideDevelopment: true
     github:
       development:
         clientId: ${AUTH_GITHUB_CLIENT_ID}
@@ -124,6 +130,13 @@ scaffolder:
 
 
 catalog:
+#  providers:
+#    azureDevOps:
+#      wipro-provider:
+#        organization: AutoGenAI
+#        project: WEGAAUTO
+#        repository: WEGAAUTO
+#        path: ../../catalog-info.yaml
   import:
     entityFilename: catalog-info.yaml
     pullRequestBranchName: backstage-integration

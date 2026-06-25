@@ -89,7 +89,7 @@ backend.add(import('@backstage/plugin-techdocs-backend'));
 
 
 // See https://backstage.io/docs/backend-system/building-backends/migrating#the-auth-plugin
-// backend.add(import('@backstage/plugin-auth-backend-module-guest-provider'));
+backend.add(import('@backstage/plugin-auth-backend-module-guest-provider'));
 // See https://backstage.io/docs/auth/guest/provider
 
 // catalog plugin
@@ -130,6 +130,7 @@ backend.add(import('@backstage/plugin-notifications-backend'));
 backend.add(import('@backstage/plugin-signals-backend'));
 //backend.add(githubSignInModule);
 backend.add(import('@backstage/plugin-auth-backend-module-github-provider'));
+//backend.add(import('@backstage-community/plugin-azure-devops-backend'));
 /*backend.add(
   authProvidersExtensionPoint.createExtension({
     resolver: {
@@ -146,8 +147,9 @@ backend.add(import('@backstage/plugin-auth-backend-module-github-provider'));
   })
 );*/
 
-//backend.add(import('@internal/backstage-plugin-my-data-backend'));
+backend.add(import('@internal/backstage-plugin-my-data-backend'));
 //backend.add(import('@internal/backstage-plugin-wcd-backend'));
 backend.add(import('@internal/backstage-plugin-wcd-backend'));
 //backend.add(import('@internal/backstage-plugin-scaffolder-backend-module-shell-script-action'));
+backend.add(import('@internal/backstage-plugin-az-task-monitoring-backend-backend'));
 backend.start();

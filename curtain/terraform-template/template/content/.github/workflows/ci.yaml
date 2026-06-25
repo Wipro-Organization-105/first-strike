@@ -1,0 +1,75 @@
+name: terraform-apply
+
+on:
+  workflow_dispatch:
+    inputs:
+      workspaceName:
+        description: "Workspace name from Backstage"
+        required: true
+        type: string
+
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+
+    # Run ALL steps inside your prebuilt container that has git + terraform
+    container:
+      image: ghcr.io/kksinghwipro04/alpine-git-terraform:v3
+      # If the image is private, GitHub token works for GHCR in same org/user in many cases
+      #credentials:
+      #  username: ${{ github.actor }}
+      #  password: ${{ secrets.GITHUB_TOKEN }}
+
+    #defaults:
+    #  run:
+    #    shell: sh
+    #    working-directory: ${{ inputs.tf_dir }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Show versions
+        run: |
+          terraform -version
+
+      #- name: Show received input
+      #  run: |
+      #    echo "Workspace name: ${{ inputs.workspaceName }}"
+     #     git --version
+
+      # Optional: if your TF needs backend creds, export env vars here (from secrets)
+      # Example for AWS (static secrets) - uncomment if needed:
+      # - name: Configure AWS env
+      #   run: |
+      #     echo "AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}" >> $GITHUB_ENV
+      #     echo "AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}" >> $GITHUB_ENV
+      #     echo "AWS_DEFAULT_REGION=${{ secrets.AWS_DEFAULT_REGION }}" >> $GITHUB_ENV
+
+      - name: Terraform init
+        run: terraform init -input=false
+
+      # (Optional but recommended) quick sanity
+      #- name: Terraform validate
+      #  run: terraform validate
+
+      - name: Terraform plan
+        env:
+          TF_VAR_workspace_name: ${{ '${{ inputs.workspaceName }}' }}
+        run: terraform plan -input=false -out=tfplan
+
+      # Safe default: only apply automatically if auto_approve == true
+      - name: Terraform apply
+        #if: ${{ inputs.auto_approve == 'true' }}
+        env:
+          TF_VAR_workspace_name: ${{ '${{ inputs.workspaceName }}' }}
+
+        run: terraform apply -auto-approve
+
+     # - name: Apply hint (auto_approve is false)
+     #   if: ${{ inputs.auto_approve != 'true' }}
+     #   run: |
+     #     echo "auto_approve is false, so apply step is skipped."
+     #     echo "Re-run workflow with auto_approve=true to apply."
+

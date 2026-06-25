@@ -1,0 +1,28 @@
+{
+  "lastUpdated": "2026-06-24T11:36:48Z",
+  "project": "SDV_Solution_Team",
+  "organization": "navarat",
+  "includedAreaPaths": [
+    "SDV_Solution_Team\\SDV_IDE_Team",
+    "SDV_Solution_Team\\HPC_Reference_Platform"
+  ],
+  "workItemTypeCount": 15,
+  "workItemTypes": [
+    "Bug",
+    "Code Review Request",
+    "Code Review Response",
+    "Epic",
+    "Feature",
+    "Feedback Request",
+    "Feedback Response",
+    "Shared Steps",
+    "Task",
+    "Test Case",
+    "Test Plan",
+    "Test Suite",
+    "User Story",
+    "Issue",
+    "Shared Parameter"
+  ],
+  "recordCount": 845
+}
